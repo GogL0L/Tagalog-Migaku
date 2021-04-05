@@ -488,3 +488,27 @@ printfn "The result: %A" result
 :   { Word = "makipaghiwalay"
 :     Definition = "v., inf. 1. mutually separate; 2. estrange; 3. diverge"
 :     Conjugations = ["nakikipaghiwalay"; "nakipaghiwalay"; "makikipaghiwalay"] }
+
+
+
+** Get webpage
+
+#+begin_src fsharp :results output :session
+let getWebPageURL (char:string) (number:int) : string = 
+    if number = 1 then 
+        sprintf "%s/%s" 
+            "https://tagalog.pinoydictionary.com/list" char
+    else
+        sprintf "%s/%s/%s/"
+            "https://tagalog.pinoydictionary.com/list"
+            char
+            (string number)
+    
+
+printfn "%s" <| getWebPageURL "b" 2
+#+end_src
+
+#+RESULTS:
+: https://tagalog.pinoydictionary.com/list/b/2/
+: val getWebPageURL : char:string -> number:int -> string
+
