@@ -383,6 +383,14 @@ let doc = HtmlDocument.Load("https://tagalog.pinoydictionary.com/")
 let words = doc.CssSelect(".word-group")
 #+end_src
 
+#+RESULTS:
+: val doc : HtmlDocument =
+:   <!DOCTYPE html>
+: <html lang="en">
+:   <head>
+:     <meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /><meta name="robots" content="noarchive" /><meta name="googlebot" content="noarchive" /><meta name="google" content="notranslate" /><meta name="generator" content="WordPress 4.9.7" /><title>Tagalog Dictionary</title><meta property="og:image" content="https://www.pinoydictionary.c...
+
+
 ** Data modelling
 
 #+begin_src fsharp :results output :session
@@ -405,10 +413,6 @@ let wordGroupToInfo (wordGroup : HtmlNode) : string =
     wordGroup.CssSelect(".definition").[0]
     |> firstChildText "p"
 
-
-let wordToEntry (word: HtmlNode) : Entry = {Word = ""
-                                            Definition = ""
-                                            Conjugations = []}
 #+end_src
 
 #+RESULTS:
@@ -443,3 +447,44 @@ let infoToDefinitions (info:string) : string =
 #+end_src
 
 #+RESULTS:
+
+
+
+** wordGroupToEntry (samt wordGroupToConj och wordGroupToDef)
+
+#+begin_src fsharp :results output :session
+let wordGroupToConj (wordgroup : HtmlNode) : List<string> =
+    wordgroup
+    |> wordGroupToInfo
+    |> infoToConjugations
+    
+
+let wordGroupToDef (wordgroup : HtmlNode) : string =
+    wordgroup
+    |> wordGroupToInfo
+    |> infoToDefinitions
+    
+let wordGroupToEntry (wordgroup : HtmlNode) : Entry =
+    {Word = wordGroupToWord wordgroup
+     Definition = wordGroupToDef wordgroup
+     Conjugations = wordGroupToConj wordgroup}
+#+end_src
+
+#+RESULTS:
+
+
+** Test av wordGroupToEntry
+
+#+begin_src fsharp :results output :session
+let result = wordGroupToEntry words.[10]
+printfn "The result: %A" result
+#+end_src
+
+#+RESULTS:
+: The result: { Word = "makipaghiwalay"
+:   Definition = "v., inf. 1. mutually separate; 2. estrange; 3. diverge"
+:   Conjugations = ["nakikipaghiwalay"; "nakipaghiwalay"; "makikipaghiwalay"] }
+: val result : Entry =
+:   { Word = "makipaghiwalay"
+:     Definition = "v., inf. 1. mutually separate; 2. estrange; 3. diverge"
+:     Conjugations = ["nakikipaghiwalay"; "nakipaghiwalay"; "makikipaghiwalay"] }
