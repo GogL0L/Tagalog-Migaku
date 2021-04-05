@@ -294,7 +294,7 @@ val wordToEntry : word:HtmlNode -> Entry
 *** Regex stuff
 
 #+begin_src fsharp :results output :session
-let test_string = "stuff (isinasali, isinali, isasali) v., inf. include someone as a participant"
+let test_string = "stuff (isinasali, isinali, isasali) inff., inf. in. clude someone as a participant"
 
 let test_string2 = "stuutuf inf. this should (should, not) . not be in"
 //let result =  Regex.Match (test_string, "(.+?)\." )
@@ -316,21 +316,30 @@ let infoToConjugations (info:string) : List<string> =
     //|> List.map String.Trim
 
 
-let result = infoToConjugations test_string2
+let infoToDefinitions (info:string) : string =
+    let suffix = @"\w*\.(.+)"
+    info
+    |> matches suffix
+    |> Array.head
+    |> sprintf "%A"
+
+
+let result = infoToDefinitions test_string
 
 printfn "type of hello: %A" <| result.GetType ()
 printfn "the value of result: %A" <| result
 #+end_src
 
 #+RESULTS:
-: type of hello: Microsoft.FSharp.Collections.FSharpList`1[System.String]
-: the value of result: []
+: type of hello: System.String
+: the value of result: "inff., inf. in. clude someone as a participant"
 : val test_string : string =
-:   "stuff (isinasali, isinali, isasali) v., inf. include someone "+[16 chars]
+:   "stuff (isinasali, isinali, isasali) inff., inf. in. clude som"+[21 chars]
 : val test_string2 : string =
 :   "stuutuf inf. this should (should, not) . not be in"
 : val infoToConjugations : info:string -> List<string>
-: val result : List<string> = []
+: val infoToDefinitions : info:string -> string
+: val result : string = "inff., inf. in. clude someone as a participant"
 
 *** List index
 
@@ -341,7 +350,7 @@ printfn "first number %A" <| List.head [1;2;3]
 #+RESULTS:
 : first number 1
 
-** Data modelling
+*** Data modelling
 
 #+begin_src fsharp :results output :session
 type Entry = {Word: string
@@ -365,3 +374,72 @@ printfn "The word_hello Conjugations: %A" word_hello.Conjugations.[0]
 :                            Definition = "A common greeting"
 :                            Conjugations = ["Hi"; "Yo"] }
 
+* Scraper
+
+** Hemsidan och wordgroups
+
+#+begin_src fsharp :results output :session
+let doc = HtmlDocument.Load("https://tagalog.pinoydictionary.com/")
+let words = doc.CssSelect(".word-group")
+#+end_src
+
+** Data modelling
+
+#+begin_src fsharp :results output :session
+type Entry = {Word: string
+              Definition: string
+              Conjugations: list<string>}
+#+end_src
+
+#+RESULTS:
+
+
+** Konvertera wordgroup html node till relevanta saker
+
+#+begin_src fsharp :results output :session
+let wordGroupToWord (wordGroup : HtmlNode) : string =
+    wordGroup.CssSelect(".word-entry").[0]
+    |> firstChildText "a"
+
+let wordGroupToInfo (wordGroup : HtmlNode) : string =
+    wordGroup.CssSelect(".definition").[0]
+    |> firstChildText "p"
+
+
+let wordToEntry (word: HtmlNode) : Entry = {Word = ""
+                                            Definition = ""
+                                            Conjugations = []}
+#+end_src
+
+#+RESULTS:
+
+
+** Regex stuff
+
+#+begin_src fsharp :results output :session
+let infoToConjugations (info:string) : List<string> =
+    let prefix = @"(.+?)\."
+    let parenthesis = @"\((?<conjugations>.*)\)"
+    info
+    |> matches prefix
+    |> Array.head
+    |> sprintf "%A"
+    |> capture parenthesis "conjugations"
+    |> sprintf "%s"
+    |> fun str -> str.Split [|','|]
+    |> Seq.map (fun str -> str.Trim ())
+    |> Seq.toList
+    |> fun lst -> if lst = [""] then [] else lst
+    //|> List.map String.Trim
+
+
+let infoToDefinitions (info:string) : string =
+    let suffix = @"\w*\.(.+)"
+    info
+    |> matches suffix
+    |> Array.head
+    |> sprintf "%A"
+
+#+end_src
+
+#+RESULTS:
