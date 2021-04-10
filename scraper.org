@@ -452,6 +452,51 @@ val json : string =
 "+[60 chars]
 #+end_example
 
+* Https request test
+#+begin_src fsharp :results output
+
+#r "nuget: FSharp.Data, 4.0.1"
+open FSharp.Data
+//let doc = HtmlDocument.Load("https://tagalog.pinoydictionary.com/yolo")
+let doc2 = Http.Request("https://tagalog.pinoydictionary.com", silentHttpErrors = true)
+printfn "%A" doc2.StatusCode
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+/tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+[Loading /tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj.fsx]
+namespace FSI_0220.Project
+
+200
+val doc2 : HttpResponse =
+  { Body =
+          Text
+            "<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8""+[17415 chars]
+    StatusCode = 200
+    ResponseUrl = "https://tagalog.pinoydictionary.com"
+    Headers =
+             map
+               [("Alt-Svc", "h3-27=":443", h3-28=":443", h3-29=":443"");
+                ("CF-Cache-Status", "DYNAMIC");
+                ("CF-RAY", "63df0cf23f81f14a-ARN");
+                ("Connection", "keep-alive");
+                ("Content-Type", "text/html; charset=utf-8");
+                ("Date", "Sat, 10 Apr 2021 21:25:56 GMT");
+                ("Expect-CT",
+                 "max-age=604800, report-uri="https://report-uri.cloudflare.com"+[26 chars]);
+                ("NEL", "{"report_to":"cf-nel","max_age":604800}");
+                ("Report-To",
+                 "{"group":"cf-nel","endpoints":[{"url":"https:\/\/a.nel.cloudf"+[178 chars]);
+                ...]
+    Cookies =
+             map [("__cfduid", "d98cf143766b5b014e010aa1c55cfc2c11618089956")] }
+#+end_example
+
 * Scraper
 
 ** Header
@@ -623,6 +668,27 @@ printfn "%s" <| getWebPageURL "b" 2
 #+RESULTS:
 : https://tagalog.pinoydictionary.com/list/b/2/
 : val getWebPageURL : char:string -> number:int -> string
+
+
+** Valid websites
+
+#+begin_src fsharp :results output :session
+let rec getMaxIndex (char:string) (index: int) : int =
+    let URL = getWebPageURL char index
+    let request = Http.Request(URL, silentHttpErrors = true)
+    let status = request.StatusCode
+    if status = 404 then index
+    else if index >= 1 then getMaxIndex char (index + 1)
+    else -1
+
+let result = getMaxIndex "a" 1
+printfn "result: %A" result
+#+end_src
+
+#+RESULTS:
+: result: 89
+: val getMaxIndex : char:string -> index:int -> int
+: val result : int = 89
 
 
 ** Migaku stuff
