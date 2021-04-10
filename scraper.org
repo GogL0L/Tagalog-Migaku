@@ -658,7 +658,9 @@ let createMigakuConjEntry
     (conjugations:List<string>)
     : List<MigakuConjEntry> =
     if conjugations = [] then [] else
-        conjugations |> List.map (fun conj -> {inflected = conj; [word]})
+        conjugations |> List.map (fun conj -> {inflected = conj; dict = [word]})
 #+end_src
+
+#+RESULTS:
 
 
