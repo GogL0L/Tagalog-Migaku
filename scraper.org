@@ -374,7 +374,109 @@ printfn "The word_hello Conjugations: %A" word_hello.Conjugations.[0]
 :                            Definition = "A common greeting"
 :                            Conjugations = ["Hi"; "Yo"] }
 
+* File IO test
+
+** general output testing
+#+begin_src fsharp :results output
+open System
+
+let file_path = "test.json"
+let string_list = ["testar med bara System"; "testar på haskell func form"; "third line"]
+
+
+File.WriteAllLines (file_path, string_list)
+let concat_string = sprintf "%A %A" "hello" " world"
+let plus_string = "hello" + " world"
+let normal_string = "hello"
+
+#+end_src
+
+#+RESULTS:
+: val file_path : string = "test.json"
+: val string_list : string list =
+:   ["testar med bara System"; "testar på haskell func form"; "third line"]
+: val concat_string : string = ""hello" " world""
+: val plus_string : string = "hello world"
+
+** Med json
+#+begin_src fsharp :results output
+#r "nuget: FSharp.Json, 0.4.0"
+open FSharp.Json
+open System
+
+type Vehicle = {
+    wheel_number : int
+    steering_wheel : bool
+    }
+
+let car : Vehicle = {wheel_number = 4; steering_wheel= true}
+let mc : Vehicle = {wheel_number = 2; steering_wheel= false}
+
+let garage : List<Vehicle> = [ car; mc ]
+let json = Json.serialize garage
+printfn "%s" json
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[Loading /tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj.fsx]
+namespace FSI_0149.Project
+
+[
+  {
+    "wheel_number": 4,
+    "steering_wheel": true
+  },
+  {
+    "wheel_number": 2,
+    "steering_wheel": false
+  }
+]
+type Vehicle =
+  { wheel_number: int
+    steering_wheel: bool }
+val car : Vehicle = { wheel_number = 4
+                      steering_wheel = true }
+val mc : Vehicle = { wheel_number = 2
+                     steering_wheel = false }
+val garage : List<Vehicle> =
+  [{ wheel_number = 4
+     steering_wheel = true }; { wheel_number = 2
+                                steering_wheel = false }]
+val json : string =
+  "[
+  {
+    "wheel_number": 4,
+    "steering_wheel": true
+  },
+"+[60 chars]
+#+end_example
+
 * Scraper
+
+** Header
+
+#+begin_src fsharp :results output :session
+#r "nuget: FSharp.Data, 4.0.1"
+#r "nuget: FsVerbalExpressions, 0.6.1"
+#r "nuget: FSharp.Json, 0.4.0"
+
+open FSharp.Data
+open FsVerbalExpressions.FsRegEx
+open System
+open FSharp.Json
+
+printfn "Header works"
+#+end_src
+
+#+RESULTS:
+: /tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+: /tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+: [Loading /tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj.fsx]
+: namespace FSI_0152.Project
+: 
+: Header works
+
 
 ** Hemsidan och wordgroups
 
@@ -397,6 +499,16 @@ let words = doc.CssSelect(".word-group")
 type Entry = {Word: string
               Definition: string
               Conjugations: list<string>}
+#+end_src
+
+#+RESULTS:
+
+
+** Helper function firstChildText
+
+#+begin_src fsharp :results output :session
+let firstChildText selector (post : HtmlNode) =
+    post.CssSelect(selector).[0].DirectInnerText().Trim()
 #+end_src
 
 #+RESULTS:
@@ -476,18 +588,18 @@ let wordGroupToEntry (wordgroup : HtmlNode) : Entry =
 ** Test av wordGroupToEntry
 
 #+begin_src fsharp :results output :session
-let result = wordGroupToEntry words.[10]
+let result = wordGroupToEntry words.[2]
 printfn "The result: %A" result
 #+end_src
 
 #+RESULTS:
-: The result: { Word = "makipaghiwalay"
-:   Definition = "v., inf. 1. mutually separate; 2. estrange; 3. diverge"
-:   Conjugations = ["nakikipaghiwalay"; "nakipaghiwalay"; "makikipaghiwalay"] }
+: The result: { Word = "ilagay sa armonia"
+:   Definition = "v., inf. harmonise (harmonize) in music"
+:   Conjugations = ["inilalagay"; "inilagay"; "ilalagay (sa armonia)"] }
 : val result : Entry =
-:   { Word = "makipaghiwalay"
-:     Definition = "v., inf. 1. mutually separate; 2. estrange; 3. diverge"
-:     Conjugations = ["nakikipaghiwalay"; "nakipaghiwalay"; "makikipaghiwalay"] }
+:   { Word = "ilagay sa armonia"
+:     Definition = "v., inf. harmonise (harmonize) in music"
+:     Conjugations = ["inilalagay"; "inilagay"; "ilalagay (sa armonia)"] }
 
 
 
@@ -511,4 +623,42 @@ printfn "%s" <| getWebPageURL "b" 2
 #+RESULTS:
 : https://tagalog.pinoydictionary.com/list/b/2/
 : val getWebPageURL : char:string -> number:int -> string
+
+
+** Migaku stuff
+
+#+begin_src fsharp :results output :session
+type MigakuDictEntry = {
+    term : string
+    altterm : string
+    pronunciation : string
+    definition : string
+    pos : string
+    examples: string
+    audio : string
+    }
+
+type MigakuConjEntry = {
+    inflected : string
+    dict : List<string>
+    }
+
+let createMigakuDictEntry (word:string) (def:string) : MigakuDictEntry = {
+    term = word
+    altterm = ""
+    pronunciation = ""
+    definition = def
+    pos = ""
+    examples = ""
+    audio = ""
+    }
+
+let createMigakuConjEntry
+    (word:string)
+    (conjugations:List<string>)
+    : List<MigakuConjEntry> =
+    if conjugations = [] then [] else
+        conjugations |> List.map (fun conj -> {inflected = conj; [word]})
+#+end_src
+
 
