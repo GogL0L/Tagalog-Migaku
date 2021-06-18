@@ -18,10 +18,10 @@ printfn "Hello world with regex (good tho)!"
 #+end_src
 
 #+RESULTS:
-: /tmp/nuget/22589--e9f65657-4398-4773-9599-433f169cd7cb/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-: /tmp/nuget/22589--e9f65657-4398-4773-9599-433f169cd7cb/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-: [Loading /tmp/nuget/22589--e9f65657-4398-4773-9599-433f169cd7cb/Project.fsproj.fsx]
-: namespace FSI_0279.Project
+: /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+: /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+: [Loading /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj.fsx]
+: namespace FSI_0002.Project
 : 
 : Hello world with regex (good tho)!
 ** Helper function
@@ -69,227 +69,6 @@ printfn "The word: %A. The info: %A." test_word test_info
 #+end_src
 
 #+RESULTS:
-#+begin_example
-The word: "ikawala". The info: "ikawala (ikinawawala, ikinawala, ikawawala) v., inf. lose; cause to lose".
-val wordGroupToWord : wordGroup:HtmlNode -> string
-val wordGroupToInfo : wordGroup:HtmlNode -> string
-val words : HtmlNode list =
-  [<div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/akasya/">akasya</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>aksaya adj. wasteful; wasted</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/alagad-ng-batas/">alagad ng batas</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>alagad ng batas n. agent of the law</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/area/">area</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>area n. area</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/baligwasan/">baligwasan</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>baligwasan n. fishing rod</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/dagos/">dagos</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>n. 1. hurried departure in anger, etc.; 2. sound of dragging something hurriedly</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/hilom/">hilom</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>n. closing up of an opening (crevice)</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/ikawala/">ikawala</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>ikawala (ikinawawala, ikinawala, ikawawala) v., inf. lose; cause to lose</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/isali/">isali</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>(isinasali, isinali, isasali) v., inf. include someone as a participant</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/luwal/">luwal</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>luwal n. exterior; outside</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/maitatagubilin/">maitatagubilin</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>maitatagubilin v., adj. advisable; able to be recommended</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/makipaghiwalay/">makipaghiwalay</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>makipaghiwalay (nakikipaghiwalay, nakipaghiwalay, makikipaghiwalay) v., inf. 1. mutually separate; 2. estrange; 3. diverge</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/managi/">managi</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>managi (nananagi, nanagi, mananagi) v., inf. push or elbow oneself through a crowd</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/masalubsob/">masalubsob</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>masalubsob (nasasalubsob, nasalubsob, masasalubsob) v., inf. be pierced or hurt by a splinter</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/pagkokorek/">pagkokorek</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>pagkokorek n. correction; act of correcting</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/panag-ulan/">panag-ulan</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>panag-ulan n., adj. anything pertaining to the rainy season</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/pumukaw/">pumukaw</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>(pumupukaw, pumukaw, pupukaw) v., inf. incite; arouse; excite</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/rabies/">rabies</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>n., med. rabies (disease of a mad dog)</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/tuay/">tuay</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>tuay n. 1. exchange; barter; 2. favour (US: favor) done for favour received</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/tudlain/">tudlain</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>tudlain (tinutudla, tinudla, tutudlain) v., inf. shoot at a target</p>
-  </div>
-</div>;
-   <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/umabala/">umabala</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>(umaabala, umabala, aabala) v., inf. delay; hinder</p>
-  </div>
-</div>]
-val example_word_group : HtmlNode =
-  <div class="word-group">
-  <div class="word">
-    <h2 class="word-entry">
-      <a href="https://tagalog.pinoydictionary.com/word/ikawala/">ikawala</a>
-    </h2><p class="label label-success language">Tagalog</p>
-  </div>
-  <div class="definition" data-language="tagalog">
-    <p>ikawala (ikinawawala, ikinawala, ikawawala) v., inf. lose; cause to lose</p>
-  </div>
-</div>
-val test_word : string = "ikawala"
-val test_info : string =
-  "ikawala (ikinawawala, ikinawala, ikawawala) v., inf. lose; cause to lose"
-val wordToEntry : word:HtmlNode -> Entry
-#+end_example
 
 *** Regex stuff
 
@@ -331,15 +110,18 @@ printfn "the value of result: %A" <| result
 #+end_src
 
 #+RESULTS:
-: type of hello: System.String
-: the value of result: "inff., inf. in. clude someone as a participant"
-: val test_string : string =
-:   "stuff (isinasali, isinali, isasali) inff., inf. in. clude som"+[21 chars]
-: val test_string2 : string =
-:   "stuutuf inf. this should (should, not) . not be in"
-: val infoToConjugations : info:string -> List<string>
-: val infoToDefinitions : info:string -> string
-: val result : string = "inff., inf. in. clude someone as a participant"
+#+begin_example
+Binding session to '/home/john/.nuget/packages/fsverbalexpressions/0.6.1/lib/net461/FsVerbalExpressions.dll'...
+type of hello: System.String
+the value of result: "inff., inf. in. clude someone as a participant"
+val test_string : string =
+  "stuff (isinasali, isinali, isasali) inff., inf. in. clude som"+[21 chars]
+val test_string2 : string =
+  "stuutuf inf. this should (should, not) . not be in"
+val infoToConjugations : info:string -> List<string>
+val infoToDefinitions : info:string -> string
+val result : string = "inff., inf. in. clude someone as a participant"
+#+end_example
 
 *** List index
 
@@ -392,11 +174,6 @@ let normal_string = "hello"
 #+end_src
 
 #+RESULTS:
-: val file_path : string = "test.json"
-: val string_list : string list =
-:   ["testar med bara System"; "testar på haskell func form"; "third line"]
-: val concat_string : string = ""hello" " world""
-: val plus_string : string = "hello world"
 
 ** Med json
 #+begin_src fsharp :results output
@@ -419,9 +196,12 @@ printfn "%s" json
 
 #+RESULTS:
 #+begin_example
-[Loading /tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj.fsx]
-namespace FSI_0149.Project
+/tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+/tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+[Loading /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj.fsx]
+namespace FSI_0019.Project
 
+Binding session to '/home/john/.nuget/packages/fsharp.json/0.4.0/lib/netstandard2.0/FSharp.Json.dll'...
 [
   {
     "wheel_number": 4,
@@ -464,37 +244,35 @@ printfn "%A" doc2.StatusCode
 
 #+RESULTS:
 #+begin_example
-/tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-/tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-[Loading /tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj.fsx]
-namespace FSI_0220.Project
+/tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+/tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+[Loading /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj.fsx]
+namespace FSI_0022.Project
 
 200
 val doc2 : HttpResponse =
   { Body =
-          Text
-            "<!DOCTYPE html>
+     Text
+       "<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8""+[17415 chars]
+<meta charset="utf-8""+[17346 chars]
     StatusCode = 200
     ResponseUrl = "https://tagalog.pinoydictionary.com"
     Headers =
-             map
-               [("Alt-Svc", "h3-27=":443", h3-28=":443", h3-29=":443"");
-                ("CF-Cache-Status", "DYNAMIC");
-                ("CF-RAY", "63df0cf23f81f14a-ARN");
-                ("Connection", "keep-alive");
-                ("Content-Type", "text/html; charset=utf-8");
-                ("Date", "Sat, 10 Apr 2021 21:25:56 GMT");
-                ("Expect-CT",
-                 "max-age=604800, report-uri="https://report-uri.cloudflare.com"+[26 chars]);
-                ("NEL", "{"report_to":"cf-nel","max_age":604800}");
-                ("Report-To",
-                 "{"group":"cf-nel","endpoints":[{"url":"https:\/\/a.nel.cloudf"+[178 chars]);
-                ...]
-    Cookies =
-             map [("__cfduid", "d98cf143766b5b014e010aa1c55cfc2c11618089956")] }
+     map
+       [("Alt-Svc", "h3-27=":443", h3-28=":443", h3-29=":443", h3=":443"");
+        ("CF-Cache-Status", "DYNAMIC"); ("CF-RAY", "6614af5d6ff60d2e-ARN");
+        ("Connection", "keep-alive");
+        ("Content-Type", "text/html; charset=utf-8");
+        ("Date", "Fri, 18 Jun 2021 12:57:43 GMT");
+        ("Expect-CT",
+         "max-age=604800, report-uri="https://report-uri.cloudflare.com"+[26 chars]);
+        ("NEL", "{"report_to":"cf-nel","max_age":604800}");
+        ("Report-To",
+         "{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\"+[200 chars]);
+        ...]
+    Cookies = map [] }
 #+end_example
 
 * Scraper
@@ -515,10 +293,10 @@ printfn "Header works"
 #+end_src
 
 #+RESULTS:
-: /tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-: /tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-: [Loading /tmp/nuget/18845--096ca174-382e-4e86-a5d8-4e7a3e33a795/Project.fsproj.fsx]
-: namespace FSI_0152.Project
+: /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+: /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+: [Loading /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj.fsx]
+: namespace FSI_0025.Project
 : 
 : Header works
 
@@ -638,36 +416,35 @@ printfn "The result: %A" result
 #+end_src
 
 #+RESULTS:
-: The result: { Word = "ilagay sa armonia"
-:   Definition = "v., inf. harmonise (harmonize) in music"
-:   Conjugations = ["inilalagay"; "inilagay"; "ilalagay (sa armonia)"] }
-: val result : Entry =
-:   { Word = "ilagay sa armonia"
-:     Definition = "v., inf. harmonise (harmonize) in music"
-:     Conjugations = ["inilalagay"; "inilagay"; "ilalagay (sa armonia)"] }
+: The result: { Word = "dagit"
+:   Definition = "n. swooping and seizing while in flight"
+:   Conjugations = [] }
+: val result : Entry = { Word = "dagit"
+:                        Definition = "n. swooping and seizing while in flight"
+:                        Conjugations = [] }
 
 
 
 ** Get webpage
 
 #+begin_src fsharp :results output :session
-let getWebPageURL (char:string) (number:int) : string = 
+let getWebPageURL (char:char) (number:int) : string = 
     if number = 1 then 
-        sprintf "%s/%s" 
+        sprintf "%s/%O" 
             "https://tagalog.pinoydictionary.com/list" char
     else
-        sprintf "%s/%s/%s/"
+        sprintf "%s/%O/%s/"
             "https://tagalog.pinoydictionary.com/list"
             char
             (string number)
     
 
-printfn "%s" <| getWebPageURL "b" 2
+printfn "%s" <| getWebPageURL 'b' 2
 #+end_src
 
 #+RESULTS:
 : https://tagalog.pinoydictionary.com/list/b/2/
-: val getWebPageURL : char:string -> number:int -> string
+: val getWebPageURL : char:char -> number:int -> string
 
 
 ** Valid websites
@@ -677,11 +454,12 @@ let rec getMaxIndex (char:string) (index: int) : int =
     let URL = getWebPageURL char index
     let request = Http.Request(URL, silentHttpErrors = true)
     let status = request.StatusCode
+    
     if status = 404 then index
     else if index >= 1 then getMaxIndex char (index + 1)
     else -1
 
-let result = getMaxIndex "a" 1
+let result = getMaxIndex 'a" 70
 printfn "result: %A" result
 #+end_src
 
@@ -729,4 +507,28 @@ let createMigakuConjEntry
 
 #+RESULTS:
 
+
+** Scrape
+
+*** Scrape site
+#+begin_src fsharp :results output :session
+let scrapeSite char -> int ->  MigakuDictEntry * MigakuConjEntry =
+    fun charID intID ->
+        let url = getWebPageURL charID intID
+        
+#+end_src
+
+#+RESULTS:
+
+*** Scrape whole websit
+#+begin_src fsharp :results output :session
+let scrape : unit -> string -> string =
+    fun () ->
+        for letterID in ['a' .. 'z'] do
+            for numberID in [1 .. 9] do
+                printfn "%c%i" letterID numberID
+scrape ()
+#+end_src
+
+#+RESULTS:
 
