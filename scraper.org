@@ -6,6 +6,12 @@
 
 * Scraper
 
+** Introduction
+In this document it will be demonstrated how the task of scraping
+which one would probably consult python for, can be developed in some
+sense much more streamlined in a functional language like fsharp. With
+extra benefits such as being able to easily build upon the software.
+
 ** Disclarimer
 #+begin_src fsharp :results output :session :padline 0
 //OBSERVE THAT PERMISSION FROM PINOY DICTIONARY © MUST BE REQUIRED IN ORDER TO
@@ -526,12 +532,12 @@ let scrape : unit -> unit =
         let mutable dic = []
         let mutable conj = []
         //for letterID in ['a' .. 'z'] do
-        for charID in ['z'] do
+        for charID in ['a' .. 'z'] do
             let mutable intID = 1
             let mutable loop = true
             while loop do
                 let URL = getWebPageURL charID intID
-                printfn "Checking: %s" URL
+                printfn "Scraping: %s" URL
                 let request = Http.Request(URL, silentHttpErrors = true)
                 let status = request.StatusCode
 
