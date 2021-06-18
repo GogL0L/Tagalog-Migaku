@@ -1,7 +1,19 @@
 #+title: Tagalog dictionary scraper
-#+description: Scrapes the dictionary "" and saves it to the file dictionary.json and conjugations.json in the migaku format.
+#+description: Scrapes the dictionary online dictionary "https://tagalog.pinoydictionary.com" and saves it to the files 'dictionary.json' and 'conjugations.json' in the migaku format. OBSERVE THAT PERMISSION FROM PINOY DICTIONARY © MUST BE REQUIRED IN ORDER TO EXECUTE THE CODE AND THUS SCRAPE THE WEBSITE. THE PURPOSE OF THIS CODE IS EXCLUSIVELY FOR EDUCATIONAL REASONS, SPECIFICALLY HOW ONE WOULD SCRAPE WITH A FUNCTIONAL LANGUAGE, IN THIS CASE FSHARP, APART OF THE DOTNET FRAMEWORK BY MICROSOFT ©.
+#+PROPERTY: header-args :tangle ./scraper.fsx :padline 2
+
+
 
 * Scraper
+
+** Disclarimer
+#+begin_src fsharp :results output :session :padline 0
+//OBSERVE THAT PERMISSION FROM PINOY DICTIONARY © MUST BE REQUIRED IN ORDER TO
+//EXECUTE THE CODE AND THUS SCRAPE THE WEBSITE. THE PURPOSE OF THIS CODE IS
+//EXCLUSIVELY FOR EDUCATIONAL REASONS, SPECIFICALLY HOW ONE WOULD SCRAPE WITH A
+//FUNCTIONAL LANGUAGE, IN THIS CASE FSHARP, APART OF THE DOTNET FRAMEWORK BY
+//MICROSOFT ©.
+#+end_src
 
 ** Header
 
@@ -26,6 +38,7 @@ printfn "Header works"
 : namespace FSI_0051.Project
 : 
 : Header works
+
 
 
 ** Entry type
@@ -139,14 +152,10 @@ printfn "The result: %A" result
 
 #+begin_src fsharp :results output :session
 let getWebPageURL (char:char) (number:int) : string = 
-    if number = 1 then 
-        sprintf "%s/%O" 
-            "https://tagalog.pinoydictionary.com/list" char
-    else
-        sprintf "%s/%O/%s/"
-            "https://tagalog.pinoydictionary.com/list"
-            char
-            (string number)
+    sprintf "%s/%O/%s/"
+        "https://tagalog.pinoydictionary.com/list"
+        char
+        (string number)
 #+end_src
 
 #+RESULTS:
@@ -154,11 +163,11 @@ let getWebPageURL (char:char) (number:int) : string =
 
 *** Test av getWebPageURL
 #+begin_src fsharp :results output :session :tangle no
-printfn "%s" <| getWebPageURL 'b' 2
+printfn "%s" <| getWebPageURL 'b' 1
 #+end_src
 
 #+RESULTS:
-: https://tagalog.pinoydictionary.com/list/b/2/
+: https://tagalog.pinoydictionary.com/list/b/1/
 
 
 
@@ -204,9 +213,8 @@ let createMigakuConjEntry
 
 ** Scrape site
 #+begin_src fsharp :results output :session
-let scrapeSite : char -> int ->  List<MigakuDictEntry> * List<MigakuConjEntry> =
-    fun charID intID ->
-        let url = getWebPageURL charID intID
+let scrapeSite : string ->  List<MigakuDictEntry> * List<MigakuConjEntry> =
+    fun url->
         let doc = HtmlDocument.Load(url)
         let words = doc.CssSelect(".word-group")
         let dicList =
@@ -228,288 +236,286 @@ let scrapeSite : char -> int ->  List<MigakuDictEntry> * List<MigakuConjEntry> =
 
 *** test av scrape site
 #+begin_src fsharp :results output :session :tangle no
-let result = scrapeSite 'a' 5
+let url = getWebPageURL 'a' 4
+let result = scrapeSite url
 printfn "The result: %A" result
 #+end_src
 
 #+RESULTS:
 #+begin_example
-The result: ([{ term = "abot ng mata"
+The result: ([{ term = "abitsuwelas"
     altterm = ""
     pronunciation = ""
-    definition = "comp., n. visibility"
+    definition = "n., bot. small type of kidney bean"
     pos = ""
     examples = ""
-    audio = "" }; { term = "abot ng tanaw"
+    audio = "" }; { term = "abitswelas"
                     altterm = ""
                     pronunciation = ""
-                    definition = "comp., n. visibility"
+                    definition = "n., bot. variety of kidney beans"
                     pos = ""
                     examples = ""
-                    audio = "" }; { term = "abot ng tingin"
+                    audio = "" }; { term = "abla"
                                     altterm = ""
                                     pronunciation = ""
-                                    definition = "comp., n. visibility"
+                                    definition = "n. idle talk; too much talk"
                                     pos = ""
                                     examples = ""
-                                    audio = "" };
-  { term = "abot-dinig"
-    altterm = ""
-    pronunciation = ""
-    definition = "adj. within hearing"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abot-isip"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "adv. within mental grasp"
-                    pos = ""
-                    examples = ""
-                    audio = "" }; { term = "abot-tanaw"
-                                    altterm = ""
-                                    pronunciation = ""
-                                    definition = "adj. within seeing distance"
-                                    pos = ""
-                                    examples = ""
-                                    audio = "" }; { term = "abot-tanaw"
+                                    audio = "" }; { term = "abnormal"
                                                     altterm = ""
                                                     pronunciation = ""
-                                                    definition = "n. horizon"
+                                                    definition = "adj. abnormal"
                                                     pos = ""
                                                     examples = ""
                                                     audio = "" };
-  { term = "abot-tingin"
+  { term = "abo"
     altterm = ""
     pronunciation = ""
-    definition = "n. visibility"
+    definition = "n. ash; ashes"
     pos = ""
     examples = ""
-    audio = "" }; { term = "aboy"
+    audio = "" }; { term = "abog"
                     altterm = ""
                     pronunciation = ""
-                    definition = "adj. being driven to a certain place"
-                    pos = ""
-                    examples = ""
-                    audio = "" }; { term = "abrasador"
-                                    altterm = ""
-                                    pronunciation = ""
-                                    definition = "n. leg pillow"
-                                    pos = ""
-                                    examples = ""
-                                    audio = "" };
-  { term = "abrasadurin"
-    altterm = ""
-    pronunciation = ""
-    definition = "v., inf. use as leg pillow"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abrasete"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "adj., adv. walking arm-in-arm"
-                    pos = ""
-                    examples = ""
-                    audio = "" }; { term = "abrasibo"
-                                    altterm = ""
-                                    pronunciation = ""
-                                    definition = "adj. abrasive"
-                                    pos = ""
-                                    examples = ""
-                                    audio = "" };
-  { term = "abrigo"
-    altterm = ""
-    pronunciation = ""
-    definition = "n. overcoat; sweater"
-    pos = ""
-    examples = ""
-    audio = "" };
-  { term = "abriguhan"
-    altterm = ""
-    pronunciation = ""
-    definition = "v., inf. put an overcoat or sweater on someone"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "Abril"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "n. April (month)"
-                    pos = ""
-                    examples = ""
-                    audio = "" }; { term = "abrilata"
-                                    altterm = ""
-                                    pronunciation = ""
-                                    definition = "n. can-opener"
-                                    pos = ""
-                                    examples = ""
-                                    audio = "" };
-  { term = "abrisete"
-    altterm = ""
-    pronunciation = ""
-    definition = "adj., adv. walking arm-in-arm"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "absen"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "n., adj. absence [n]; absent [adj.]"
+                    definition = "n. 1. notice; 2. noise"
                     pos = ""
                     examples = ""
                     audio = "" };
-  { term = "absent"
+  { term = "abogado"
     altterm = ""
     pronunciation = ""
-    definition = "n., adj. absence [n]; absent [adj.]"
+    definition =
+     "n. 1. lawyer; attorney; 2. solicitor; lawyer (for government); 3. councel"
     pos = ""
     examples = ""
-    audio = "" }],
- [{ inflected = "inaabrasador"
-    dict = ["abrasadurin"] }; { inflected = "inabrasador"
-                                dict = ["abrasadurin"] };
-  { inflected = "aabrasadurin"
-    dict = ["abrasadurin"] }; { inflected = "inaabriguhan"
-                                dict = ["abriguhan"] };
-  { inflected = "inabriguhan"
-    dict = ["abriguhan"] }; { inflected = "aabriguhan"
-                              dict = ["abriguhan"] }])
+    audio = "" }; { term = "abogasia"
+                    altterm = ""
+                    pronunciation = ""
+                    definition = "n. law; the legal profession"
+                    pos = ""
+                    examples = ""
+                    audio = "" }; { term = "abogasya"
+                                    altterm = ""
+                                    pronunciation = ""
+                                    definition = "n. law; the legal profession"
+                                    pos = ""
+                                    examples = ""
+                                    audio = "" }; { term = "abok"
+                                                    altterm = ""
+                                                    pronunciation = ""
+                                                    definition = "n. dust"
+                                                    pos = ""
+                                                    examples = ""
+                                                    audio = "" };
+  { term = "abokado"
+    altterm = ""
+    pronunciation = ""
+    definition = "n., bot. avocado"
+    pos = ""
+    examples = ""
+    audio = "" };
+  { term = "abonado"
+    altterm = ""
+    pronunciation = ""
+    definition =
+     "adj. ref. to a person who add money to someone else, because he is short of money"
+    pos = ""
+    examples = ""
+    audio = "" }; { term = "abono"
+                    altterm = ""
+                    pronunciation = ""
+                    definition = "n. 1. fertilizer; 2. payment in advance"
+                    pos = ""
+                    examples = ""
+                    audio = "" };
+  { term = "abonohan"
+    altterm = ""
+    pronunciation = ""
+    definition = "v., inf. 1. fertilize; 2. disburse or pay in advance"
+    pos = ""
+    examples = ""
+    audio = "" }; { term = "aborsiyon"
+                    altterm = ""
+                    pronunciation = ""
+                    definition = "n. abortion"
+                    pos = ""
+                    examples = ""
+                    audio = "" }; { term = "abot"
+                                    altterm = ""
+                                    pronunciation = ""
+                                    definition = "adj. within reach"
+                                    pos = ""
+                                    examples = ""
+                                    audio = "" };
+  { term = "abot"
+    altterm = ""
+    pronunciation = ""
+    definition = "n. power; capacity; range"
+    pos = ""
+    examples = ""
+    audio = "" }; { term = "abot"
+                    altterm = ""
+                    pronunciation = ""
+                    definition = "adj. overtaken; abreast with"
+                    pos = ""
+                    examples = ""
+                    audio = "" };
+  { term = "abot ng isang kabisa"
+    altterm = ""
+    pronunciation = ""
+    definition = "comp., n., mat. linear function"
+    pos = ""
+    examples = ""
+    audio = "" }; { term = "abot ng isip"
+                    altterm = ""
+                    pronunciation = ""
+                    definition = "comp., n. scope; distance the mind can reach"
+                    pos = ""
+                    examples = ""
+                    audio = "" }],
+ [{ inflected = "inaabonohan"
+    dict = ["abonohan"] }; { inflected = "inabonohan"
+                             dict = ["abonohan"] }; { inflected = "aabonohan"
+                                                      dict = ["abonohan"] }])
+val url : string = "https://tagalog.pinoydictionary.com/list/a/4/"
 val result : List<MigakuDictEntry> * List<MigakuConjEntry> =
-  ([{ term = "abot ng mata"
+  ([{ term = "abitsuwelas"
       altterm = ""
       pronunciation = ""
-      definition = "comp., n. visibility"
+      definition = "n., bot. small type of kidney bean"
       pos = ""
       examples = ""
-      audio = "" }; { term = "abot ng tanaw"
+      audio = "" }; { term = "abitswelas"
                       altterm = ""
                       pronunciation = ""
-                      definition = "comp., n. visibility"
-                      pos = ""
-                      examples = ""
-                      audio = "" }; { term = "abot ng tingin"
-                                      altterm = ""
-                                      pronunciation = ""
-                                      definition = "comp., n. visibility"
-                                      pos = ""
-                                      examples = ""
-                                      audio = "" };
-    { term = "abot-dinig"
-      altterm = ""
-      pronunciation = ""
-      definition = "adj. within hearing"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abot-isip"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "adv. within mental grasp"
+                      definition = "n., bot. variety of kidney beans"
                       pos = ""
                       examples = ""
                       audio = "" };
-    { term = "abot-tanaw"
+    { term = "abla"
       altterm = ""
       pronunciation = ""
-      definition = "adj. within seeing distance"
+      definition = "n. idle talk; too much talk"
       pos = ""
       examples = ""
-      audio = "" }; { term = "abot-tanaw"
+      audio = "" }; { term = "abnormal"
                       altterm = ""
                       pronunciation = ""
-                      definition = "n. horizon"
+                      definition = "adj. abnormal"
                       pos = ""
                       examples = ""
-                      audio = "" }; { term = "abot-tingin"
+                      audio = "" }; { term = "abo"
                                       altterm = ""
                                       pronunciation = ""
-                                      definition = "n. visibility"
+                                      definition = "n. ash; ashes"
                                       pos = ""
                                       examples = ""
                                       audio = "" };
-    { term = "aboy"
+    { term = "abog"
       altterm = ""
       pronunciation = ""
-      definition = "adj. being driven to a certain place"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abrasador"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "n. leg pillow"
-                      pos = ""
-                      examples = ""
-                      audio = "" };
-    { term = "abrasadurin"
-      altterm = ""
-      pronunciation = ""
-      definition = "v., inf. use as leg pillow"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abrasete"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "adj., adv. walking arm-in-arm"
-                      pos = ""
-                      examples = ""
-                      audio = "" }; { term = "abrasibo"
-                                      altterm = ""
-                                      pronunciation = ""
-                                      definition = "adj. abrasive"
-                                      pos = ""
-                                      examples = ""
-                                      audio = "" };
-    { term = "abrigo"
-      altterm = ""
-      pronunciation = ""
-      definition = "n. overcoat; sweater"
+      definition = "n. 1. notice; 2. noise"
       pos = ""
       examples = ""
       audio = "" };
-    { term = "abriguhan"
+    { term = "abogado"
       altterm = ""
       pronunciation = ""
-      definition = "v., inf. put an overcoat or sweater on someone"
+      definition =
+       "n. 1. lawyer; attorney; 2. solicitor; lawyer (for government)"+[12 chars]
       pos = ""
       examples = ""
-      audio = "" }; { term = "Abril"
+      audio = "" }; { term = "abogasia"
                       altterm = ""
                       pronunciation = ""
-                      definition = "n. April (month)"
-                      pos = ""
-                      examples = ""
-                      audio = "" }; { term = "abrilata"
-                                      altterm = ""
-                                      pronunciation = ""
-                                      definition = "n. can-opener"
-                                      pos = ""
-                                      examples = ""
-                                      audio = "" };
-    { term = "abrisete"
-      altterm = ""
-      pronunciation = ""
-      definition = "adj., adv. walking arm-in-arm"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "absen"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "n., adj. absence [n]; absent [adj.]"
+                      definition = "n. law; the legal profession"
                       pos = ""
                       examples = ""
                       audio = "" };
-    { term = "absent"
+    { term = "abogasya"
       altterm = ""
       pronunciation = ""
-      definition = "n., adj. absence [n]; absent [adj.]"
+      definition = "n. law; the legal profession"
+      pos = ""
+      examples = ""
+      audio = "" }; { term = "abok"
+                      altterm = ""
+                      pronunciation = ""
+                      definition = "n. dust"
+                      pos = ""
+                      examples = ""
+                      audio = "" }; { term = "abokado"
+                                      altterm = ""
+                                      pronunciation = ""
+                                      definition = "n., bot. avocado"
+                                      pos = ""
+                                      examples = ""
+                                      audio = "" };
+    { term = "abonado"
+      altterm = ""
+      pronunciation = ""
+      definition =
+       "adj. ref. to a person who add money to someone else, because "+[20 chars]
+      pos = ""
+      examples = ""
+      audio = "" }; { term = "abono"
+                      altterm = ""
+                      pronunciation = ""
+                      definition = "n. 1. fertilizer; 2. payment in advance"
+                      pos = ""
+                      examples = ""
+                      audio = "" };
+    { term = "abonohan"
+      altterm = ""
+      pronunciation = ""
+      definition = "v., inf. 1. fertilize; 2. disburse or pay in advance"
+      pos = ""
+      examples = ""
+      audio = "" }; { term = "aborsiyon"
+                      altterm = ""
+                      pronunciation = ""
+                      definition = "n. abortion"
+                      pos = ""
+                      examples = ""
+                      audio = "" }; { term = "abot"
+                                      altterm = ""
+                                      pronunciation = ""
+                                      definition = "adj. within reach"
+                                      pos = ""
+                                      examples = ""
+                                      audio = "" };
+    { term = "abot"
+      altterm = ""
+      pronunciation = ""
+      definition = "n. power; capacity; range"
+      pos = ""
+      examples = ""
+      audio = "" }; { term = "abot"
+                      altterm = ""
+                      pronunciation = ""
+                      definition = "adj. overtaken; abreast with"
+                      pos = ""
+                      examples = ""
+                      audio = "" };
+    { term = "abot ng isang kabisa"
+      altterm = ""
+      pronunciation = ""
+      definition = "comp., n., mat. linear function"
+      pos = ""
+      examples = ""
+      audio = "" };
+    { term = "abot ng isip"
+      altterm = ""
+      pronunciation = ""
+      definition = "comp., n. scope; distance the mind can reach"
       pos = ""
       examples = ""
       audio = "" }],
-   [{ inflected = "inaabrasador"
-      dict = ["abrasadurin"] }; { inflected = "inabrasador"
-                                  dict = ["abrasadurin"] };
-    { inflected = "aabrasadurin"
-      dict = ["abrasadurin"] }; { inflected = "inaabriguhan"
-                                  dict = ["abriguhan"] };
-    { inflected = "inabriguhan"
-      dict = ["abriguhan"] }; { inflected = "aabriguhan"
-                                dict = ["abriguhan"] }])
+   [{ inflected = "inaabonohan"
+      dict = ["abonohan"] }; { inflected = "inabonohan"
+                               dict = ["abonohan"] };
+    { inflected = "aabonohan"
+      dict = ["abonohan"] }])
 #+end_example
 
 
@@ -517,260 +523,45 @@ val result : List<MigakuDictEntry> * List<MigakuConjEntry> =
 #+begin_src fsharp :results output :session
 let scrape : unit -> unit =
     fun () ->
-        for letterID in ['a' .. 'z'] do
-            for numberID in [1 .. 9] do
-                printfn "%c%i" letterID numberID
+        let mutable dic = []
+        let mutable conj = []
+        //for letterID in ['a' .. 'z'] do
+        for charID in ['z'] do
+            let mutable intID = 1
+            let mutable loop = true
+            while loop do
+                let URL = getWebPageURL charID intID
+                printfn "Checking: %s" URL
                 let request = Http.Request(URL, silentHttpErrors = true)
                 let status = request.StatusCode
 
-                if status = 404 then index
-                else if index >= 1 then getMaxIndex char (index + 1)
-                else -1
+                if status = 404 then do
+                    loop <- false
+                else do
+                    let dicList, conjList = scrapeSite URL
+                    dic <- dic @ dicList
+                    conj <- conj @ conjList
+                    intID <- intID + 1
+        printfn "Writing.."
+        let dic_json = Json.serialize dic
+        let conj_json = Json.serialize conj
+        File.WriteAllText ("dictionary.json", dic_json)
+        File.WriteAllText ("conjugations.json", conj_json)
+        printfn "Finnished!"
 
 
 scrape ()
 #+end_src
 
 #+RESULTS:
-#+begin_example
-a1
-a2
-a3
-a4
-a5
-a6
-a7
-a8
-a9
-b1
-b2
-b3
-b4
-b5
-b6
-b7
-b8
-b9
-c1
-c2
-c3
-c4
-c5
-c6
-c7
-c8
-c9
-d1
-d2
-d3
-d4
-d5
-d6
-d7
-d8
-d9
-e1
-e2
-e3
-e4
-e5
-e6
-e7
-e8
-e9
-f1
-f2
-f3
-f4
-f5
-f6
-f7
-f8
-f9
-g1
-g2
-g3
-g4
-g5
-g6
-g7
-g8
-g9
-h1
-h2
-h3
-h4
-h5
-h6
-h7
-h8
-h9
-i1
-i2
-i3
-i4
-i5
-i6
-i7
-i8
-i9
-j1
-j2
-j3
-j4
-j5
-j6
-j7
-j8
-j9
-k1
-k2
-k3
-k4
-k5
-k6
-k7
-k8
-k9
-l1
-l2
-l3
-l4
-l5
-l6
-l7
-l8
-l9
-m1
-m2
-m3
-m4
-m5
-m6
-m7
-m8
-m9
-n1
-n2
-n3
-n4
-n5
-n6
-n7
-n8
-n9
-o1
-o2
-o3
-o4
-o5
-o6
-o7
-o8
-o9
-p1
-p2
-p3
-p4
-p5
-p6
-p7
-p8
-p9
-q1
-q2
-q3
-q4
-q5
-q6
-q7
-q8
-q9
-r1
-r2
-r3
-r4
-r5
-r6
-r7
-r8
-r9
-s1
-s2
-s3
-s4
-s5
-s6
-s7
-s8
-s9
-t1
-t2
-t3
-t4
-t5
-t6
-t7
-t8
-t9
-u1
-u2
-u3
-u4
-u5
-u6
-u7
-u8
-u9
-v1
-v2
-v3
-v4
-v5
-v6
-v7
-v8
-v9
-w1
-w2
-w3
-w4
-w5
-w6
-w7
-w8
-w9
-x1
-x2
-x3
-x4
-x5
-x6
-x7
-x8
-x9
-y1
-y2
-y3
-y4
-y5
-y6
-y7
-y8
-y9
-z1
-z2
-z3
-z4
-z5
-z6
-z7
-z8
-z9
-val scrape : unit -> unit
-#+end_example
+: hello!
+: val scrape : unit -> unit
 
-* Test
+* Test 
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+
 
 ** Scraping test
 *** Header 
@@ -1077,4 +868,31 @@ printfn "result: %A" result
 : result: 89
 : val getMaxIndex : char:string -> index:int -> int
 : val result : int = 89
+
+
+** Get webpage old
+
+#+begin_src fsharp :results output :session
+let getWebPageURL (char:char) (number:int) : string = 
+    if number = 1 then 
+        sprintf "%s/%O" 
+            "https://tagalog.pinoydictionary.com/list" char
+    else
+        sprintf "%s/%O/%s/"
+            "https://tagalog.pinoydictionary.com/list"
+            char
+            (string number)
+#+end_src
+
+#+RESULTS:
+
+
+*** Test av getWebPageURL
+#+begin_src fsharp :results output :session :tangle no
+printfn "%s" <| getWebPageURL 'b' 2
+#+end_src
+
+#+RESULTS:
+: https://tagalog.pinoydictionary.com/list/b/2/
+
 
