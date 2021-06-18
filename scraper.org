@@ -1,280 +1,6 @@
 #+title: Tagalog dictionary scraper
 #+description: Scrapes the dictionary "" and saves it to the file dictionary.json and conjugations.json in the migaku format.
 
-* Scraping test
-** Header 
-
-#+begin_src fsharp :results output :session
-#r "nuget: FSharp.Data, 4.0.1"
-#r "nuget: FsVerbalExpressions, 0.6.1"
-
-open FSharp.Data
-//open System.Text.RegularExpressions
-open FsVerbalExpressions.FsRegEx
-
-//let doc = HtmlDocument.Load("https://google.com")
-//printfn "The site: %A" doc
-printfn "Hello world with regex (good tho)!"
-#+end_src
-
-#+RESULTS:
-: /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-: /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-: [Loading /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj.fsx]
-: namespace FSI_0002.Project
-: 
-: Hello world with regex (good tho)!
-** Helper function
-
-#+begin_src fsharp :results output :session
-let firstChildText selector (post : HtmlNode) =
-    post.CssSelect(selector).[0].DirectInnerText().Trim()
-#+end_src
-
-#+RESULTS:
-
-** Actual testning
-
-*** Konvertera wordgroup html node till relevanta saker
-#+begin_src fsharp :results output :session
-let doc = HtmlDocument.Load("https://tagalog.pinoydictionary.com/")
-#+end_src
-
-#+RESULTS:
-
-
-#+begin_src fsharp :results output :session
-let wordGroupToWord (wordGroup : HtmlNode) : string =
-    wordGroup.CssSelect(".word-entry").[0]
-    |> firstChildText "a"
-
-let wordGroupToInfo (wordGroup : HtmlNode) : string =
-    wordGroup.CssSelect(".definition").[0]
-    |> firstChildText "p"
-
-
-let words = doc.CssSelect(".word-group")
-
-//let example_word = words.[0].CssSelect(".definition").[0]
-let example_word_group = words.[6]
-//let test = example_word.CssSelect(".word")
-let test_word = wordGroupToWord example_word_group
-let test_info = wordGroupToInfo example_word_group
-
-let wordToEntry (word: HtmlNode) : Entry = {Word = ""
-                                            Definition = ""
-                                            Conjugations = []}
-
-printfn "The word: %A. The info: %A." test_word test_info
-#+end_src
-
-#+RESULTS:
-
-*** Regex stuff
-
-#+begin_src fsharp :results output :session
-let test_string = "stuff (isinasali, isinali, isasali) inff., inf. in. clude someone as a participant"
-
-let test_string2 = "stuutuf inf. this should (should, not) . not be in"
-//let result =  Regex.Match (test_string, "(.+?)\." )
-//let result_paren = Regex.Match (result, "(.+)")
-//printfn "The result is %A" <| result.GetType ()
-let infoToConjugations (info:string) : List<string> =
-    let prefix = @"(.+?)\."
-    let parenthesis = @"\((?<conjugations>.*)\)"
-    info
-    |> matches prefix
-    |> Array.head
-    |> sprintf "%A"
-    |> capture parenthesis "conjugations"
-    |> sprintf "%s"
-    |> fun str -> str.Split [|','|]
-    |> Seq.map (fun str -> str.Trim ())
-    |> Seq.toList
-    |> fun lst -> if lst = [""] then [] else lst
-    //|> List.map String.Trim
-
-
-let infoToDefinitions (info:string) : string =
-    let suffix = @"\w*\.(.+)"
-    info
-    |> matches suffix
-    |> Array.head
-    |> sprintf "%A"
-
-
-let result = infoToDefinitions test_string
-
-printfn "type of hello: %A" <| result.GetType ()
-printfn "the value of result: %A" <| result
-#+end_src
-
-#+RESULTS:
-#+begin_example
-Binding session to '/home/john/.nuget/packages/fsverbalexpressions/0.6.1/lib/net461/FsVerbalExpressions.dll'...
-type of hello: System.String
-the value of result: "inff., inf. in. clude someone as a participant"
-val test_string : string =
-  "stuff (isinasali, isinali, isasali) inff., inf. in. clude som"+[21 chars]
-val test_string2 : string =
-  "stuutuf inf. this should (should, not) . not be in"
-val infoToConjugations : info:string -> List<string>
-val infoToDefinitions : info:string -> string
-val result : string = "inff., inf. in. clude someone as a participant"
-#+end_example
-
-*** List index
-
-#+begin_src fsharp :results output
-printfn "first number %A" <| List.head [1;2;3]
-#+end_src
-
-#+RESULTS:
-: first number 1
-
-*** Data modelling
-
-#+begin_src fsharp :results output :session
-type Entry = {Word: string
-              Definition: string
-              Conjugations: list<string>}
-
-let word_hello : Entry = {Word= "Hello"
-                          Definition= "A common greeting"
-                          Conjugations= [ "Hi"; "Yo" ]}
-
-printfn "The word_hello Conjugations: %A" word_hello.Conjugations.[0]
-#+end_src
-
-#+RESULTS:
-: The word_hello Conjugations: "Hi"
-: type Entry =
-:   { Word: string
-:     Definition: string
-:     Conjugations: string list }
-: val word_hello : Entry = { Word = "Hello"
-:                            Definition = "A common greeting"
-:                            Conjugations = ["Hi"; "Yo"] }
-
-* File IO test
-
-** general output testing
-#+begin_src fsharp :results output
-open System
-
-let file_path = "test.json"
-let string_list = ["testar med bara System"; "testar på haskell func form"; "third line"]
-
-
-File.WriteAllLines (file_path, string_list)
-let concat_string = sprintf "%A %A" "hello" " world"
-let plus_string = "hello" + " world"
-let normal_string = "hello"
-
-#+end_src
-
-#+RESULTS:
-
-** Med json
-#+begin_src fsharp :results output
-#r "nuget: FSharp.Json, 0.4.0"
-open FSharp.Json
-open System
-
-type Vehicle = {
-    wheel_number : int
-    steering_wheel : bool
-    }
-
-let car : Vehicle = {wheel_number = 4; steering_wheel= true}
-let mc : Vehicle = {wheel_number = 2; steering_wheel= false}
-
-let garage : List<Vehicle> = [ car; mc ]
-let json = Json.serialize garage
-printfn "%s" json
-#+end_src
-
-#+RESULTS:
-#+begin_example
-/tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-/tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-[Loading /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj.fsx]
-namespace FSI_0019.Project
-
-Binding session to '/home/john/.nuget/packages/fsharp.json/0.4.0/lib/netstandard2.0/FSharp.Json.dll'...
-[
-  {
-    "wheel_number": 4,
-    "steering_wheel": true
-  },
-  {
-    "wheel_number": 2,
-    "steering_wheel": false
-  }
-]
-type Vehicle =
-  { wheel_number: int
-    steering_wheel: bool }
-val car : Vehicle = { wheel_number = 4
-                      steering_wheel = true }
-val mc : Vehicle = { wheel_number = 2
-                     steering_wheel = false }
-val garage : List<Vehicle> =
-  [{ wheel_number = 4
-     steering_wheel = true }; { wheel_number = 2
-                                steering_wheel = false }]
-val json : string =
-  "[
-  {
-    "wheel_number": 4,
-    "steering_wheel": true
-  },
-"+[60 chars]
-#+end_example
-
-* Https request test
-#+begin_src fsharp :results output
-
-#r "nuget: FSharp.Data, 4.0.1"
-open FSharp.Data
-//let doc = HtmlDocument.Load("https://tagalog.pinoydictionary.com/yolo")
-let doc2 = Http.Request("https://tagalog.pinoydictionary.com", silentHttpErrors = true)
-printfn "%A" doc2.StatusCode
-#+end_src
-
-#+RESULTS:
-#+begin_example
-/tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-/tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-[Loading /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj.fsx]
-namespace FSI_0022.Project
-
-200
-val doc2 : HttpResponse =
-  { Body =
-     Text
-       "<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8""+[17346 chars]
-    StatusCode = 200
-    ResponseUrl = "https://tagalog.pinoydictionary.com"
-    Headers =
-     map
-       [("Alt-Svc", "h3-27=":443", h3-28=":443", h3-29=":443", h3=":443"");
-        ("CF-Cache-Status", "DYNAMIC"); ("CF-RAY", "6614af5d6ff60d2e-ARN");
-        ("Connection", "keep-alive");
-        ("Content-Type", "text/html; charset=utf-8");
-        ("Date", "Fri, 18 Jun 2021 12:57:43 GMT");
-        ("Expect-CT",
-         "max-age=604800, report-uri="https://report-uri.cloudflare.com"+[26 chars]);
-        ("NEL", "{"report_to":"cf-nel","max_age":604800}");
-        ("Report-To",
-         "{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\"+[200 chars]);
-        ...]
-    Cookies = map [] }
-#+end_example
-
 * Scraper
 
 ** Header
@@ -287,16 +13,17 @@ val doc2 : HttpResponse =
 open FSharp.Data
 open FsVerbalExpressions.FsRegEx
 open System
+open System.IO
 open FSharp.Json
 
 printfn "Header works"
 #+end_src
 
 #+RESULTS:
-: /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-: /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
-: [Loading /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj.fsx]
-: namespace FSI_0025.Project
+: /tmp/nuget/25076--ddcd24c9-19c4-40f0-a2f5-4d45003cde70/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+: /tmp/nuget/25076--ddcd24c9-19c4-40f0-a2f5-4d45003cde70/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+: [Loading /tmp/nuget/25076--ddcd24c9-19c4-40f0-a2f5-4d45003cde70/Project.fsproj.fsx]
+: namespace FSI_0038.Project
 : 
 : Header works
 
@@ -425,6 +152,23 @@ printfn "The result: %A" result
 
 
 
+** Test av wordGroupToEntry procerdural
+
+#+begin_src fsharp :results output :session
+let result = wordGroupToEntry words.[2]
+printfn "The result: %A" result
+#+end_src
+
+#+RESULTS:
+: The result: { Word = "dagit"
+:   Definition = "n. swooping and seizing while in flight"
+:   Conjugations = [] }
+: val result : Entry = { Word = "dagit"
+:                        Definition = "n. swooping and seizing while in flight"
+:                        Conjugations = [] }
+
+
+
 ** Get webpage
 
 #+begin_src fsharp :results output :session
@@ -512,10 +256,17 @@ let createMigakuConjEntry
 
 *** Scrape site
 #+begin_src fsharp :results output :session
-let scrapeSite char -> int ->  MigakuDictEntry * MigakuConjEntry =
+let scrapeSite char -> int ->  List<MigakuDictEntry> * List<MigakuConjEntry> =
     fun charID intID ->
         let url = getWebPageURL charID intID
-        
+        let doc = HtmlDocument.Load(url)
+        let words = doc.CssSelect(".word-group")
+        words
+        |> List.map wordGroupToEntry
+        |> List.map (fun entry -> (createMigakuDictEntry entry,
+                         createMigakuConjEntry))
+        |> List.unzip
+       
 #+end_src
 
 #+RESULTS:
@@ -531,4 +282,274 @@ scrape ()
 #+end_src
 
 #+RESULTS:
+
+* Test
+
+** Scraping test
+*** Header 
+
+#+begin_src fsharp :results output :session
+#r "nuget: FSharp.Data, 4.0.1"
+#r "nuget: FsVerbalExpressions, 0.6.1"
+
+open FSharp.Data
+//open System.Text.RegularExpressions
+open FsVerbalExpressions.FsRegEx
+
+//let doc = HtmlDocument.Load("https://google.com")
+//printfn "The site: %A" doc
+printfn "Hello world with regex (good tho)!"
+#+end_src
+
+#+RESULTS:
+: /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+: /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+: [Loading /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj.fsx]
+: namespace FSI_0002.Project
+: 
+: Hello world with regex (good tho)!
+*** Helper function
+
+#+begin_src fsharp :results output :session
+let firstChildText selector (post : HtmlNode) =
+    post.CssSelect(selector).[0].DirectInnerText().Trim()
+#+end_src
+
+#+RESULTS:
+
+*** Actual testning
+
+**** Konvertera wordgroup html node till relevanta saker
+#+begin_src fsharp :results output :session
+let doc = HtmlDocument.Load("https://tagalog.pinoydictionary.com/")
+#+end_src
+
+#+RESULTS:
+
+
+#+begin_src fsharp :results output :session
+let wordGroupToWord (wordGroup : HtmlNode) : string =
+    wordGroup.CssSelect(".word-entry").[0]
+    |> firstChildText "a"
+
+let wordGroupToInfo (wordGroup : HtmlNode) : string =
+    wordGroup.CssSelect(".definition").[0]
+    |> firstChildText "p"
+
+
+let words = doc.CssSelect(".word-group")
+
+//let example_word = words.[0].CssSelect(".definition").[0]
+let example_word_group = words.[6]
+//let test = example_word.CssSelect(".word")
+let test_word = wordGroupToWord example_word_group
+let test_info = wordGroupToInfo example_word_group
+
+let wordToEntry (word: HtmlNode) : Entry = {Word = ""
+                                            Definition = ""
+                                            Conjugations = []}
+
+printfn "The word: %A. The info: %A." test_word test_info
+#+end_src
+
+#+RESULTS:
+
+**** Regex stuff
+
+#+begin_src fsharp :results output :session
+let test_string = "stuff (isinasali, isinali, isasali) inff., inf. in. clude someone as a participant"
+
+let test_string2 = "stuutuf inf. this should (should, not) . not be in"
+//let result =  Regex.Match (test_string, "(.+?)\." )
+//let result_paren = Regex.Match (result, "(.+)")
+//printfn "The result is %A" <| result.GetType ()
+let infoToConjugations (info:string) : List<string> =
+    let prefix = @"(.+?)\."
+    let parenthesis = @"\((?<conjugations>.*)\)"
+    info
+    |> matches prefix
+    |> Array.head
+    |> sprintf "%A"
+    |> capture parenthesis "conjugations"
+    |> sprintf "%s"
+    |> fun str -> str.Split [|','|]
+    |> Seq.map (fun str -> str.Trim ())
+    |> Seq.toList
+    |> fun lst -> if lst = [""] then [] else lst
+    //|> List.map String.Trim
+
+
+let infoToDefinitions (info:string) : string =
+    let suffix = @"\w*\.(.+)"
+    info
+    |> matches suffix
+    |> Array.head
+    |> sprintf "%A"
+
+
+let result = infoToDefinitions test_string
+
+printfn "type of hello: %A" <| result.GetType ()
+printfn "the value of result: %A" <| result
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Binding session to '/home/john/.nuget/packages/fsverbalexpressions/0.6.1/lib/net461/FsVerbalExpressions.dll'...
+type of hello: System.String
+the value of result: "inff., inf. in. clude someone as a participant"
+val test_string : string =
+  "stuff (isinasali, isinali, isasali) inff., inf. in. clude som"+[21 chars]
+val test_string2 : string =
+  "stuutuf inf. this should (should, not) . not be in"
+val infoToConjugations : info:string -> List<string>
+val infoToDefinitions : info:string -> string
+val result : string = "inff., inf. in. clude someone as a participant"
+#+end_example
+
+**** List index
+
+#+begin_src fsharp :results output
+printfn "first number %A" <| List.head [1;2;3]
+#+end_src
+
+#+RESULTS:
+: first number 1
+
+**** Data modelling
+
+#+begin_src fsharp :results output :session
+type Entry = {Word: string
+              Definition: string
+              Conjugations: list<string>}
+
+let word_hello : Entry = {Word= "Hello"
+                          Definition= "A common greeting"
+                          Conjugations= [ "Hi"; "Yo" ]}
+
+printfn "The word_hello Conjugations: %A" word_hello.Conjugations.[0]
+#+end_src
+
+#+RESULTS:
+: The word_hello Conjugations: "Hi"
+: type Entry =
+:   { Word: string
+:     Definition: string
+:     Conjugations: string list }
+: val word_hello : Entry = { Word = "Hello"
+:                            Definition = "A common greeting"
+:                            Conjugations = ["Hi"; "Yo"] }
+
+** File IO test
+
+*** general output testing
+#+begin_src fsharp :results output
+open System
+
+let file_path = "test.json"
+let string_list = ["testar med bara System"; "testar på haskell func form"; "third line"]
+
+
+File.WriteAllLines (file_path, string_list)
+let concat_string = sprintf "%A %A" "hello" " world"
+let plus_string = "hello" + " world"
+let normal_string = "hello"
+
+#+end_src
+
+#+RESULTS:
+
+*** Med json
+#+begin_src fsharp :results output
+#r "nuget: FSharp.Json, 0.4.0"
+open FSharp.Json
+open System
+open System.IO
+
+let file_path = "garage.json"
+
+type Vehicle = {
+    wheel_number : int
+    steering_wheel : bool
+    }
+
+let car : Vehicle = {wheel_number = 4; steering_wheel= true}
+let mc : Vehicle = {wheel_number = 2; steering_wheel= false}
+
+let garage : List<Vehicle> = [ car; mc ]
+let json = Json.serialize garage
+
+File.WriteAllText (file_path, json)
+printfn "sucess?"
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[Loading /tmp/nuget/25076--ddcd24c9-19c4-40f0-a2f5-4d45003cde70/Project.fsproj.fsx]
+namespace FSI_0035.Project
+
+sucess?
+val file_path : string = "garage.json"
+type Vehicle =
+  { wheel_number: int
+    steering_wheel: bool }
+val car : Vehicle = { wheel_number = 4
+                      steering_wheel = true }
+val mc : Vehicle = { wheel_number = 2
+                     steering_wheel = false }
+val garage : List<Vehicle> =
+  [{ wheel_number = 4
+     steering_wheel = true }; { wheel_number = 2
+                                steering_wheel = false }]
+val json : string =
+  "[
+  {
+    "wheel_number": 4,
+    "steering_wheel": true
+  },
+"+[60 chars]
+#+end_example
+
+** Https request test
+#+begin_src fsharp :results output
+
+#r "nuget: FSharp.Data, 4.0.1"
+open FSharp.Data
+//let doc = HtmlDocument.Load("https://tagalog.pinoydictionary.com/yolo")
+let doc2 = Http.Request("https://tagalog.pinoydictionary.com", silentHttpErrors = true)
+printfn "%A" doc2.StatusCode
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+/tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
+[Loading /tmp/nuget/7763--ac3baa45-86cc-4299-863c-bf814c325a84/Project.fsproj.fsx]
+namespace FSI_0022.Project
+
+200
+val doc2 : HttpResponse =
+  { Body =
+     Text
+       "<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8""+[17346 chars]
+    StatusCode = 200
+    ResponseUrl = "https://tagalog.pinoydictionary.com"
+    Headers =
+     map
+       [("Alt-Svc", "h3-27=":443", h3-28=":443", h3-29=":443", h3=":443"");
+        ("CF-Cache-Status", "DYNAMIC"); ("CF-RAY", "6614af5d6ff60d2e-ARN");
+        ("Connection", "keep-alive");
+        ("Content-Type", "text/html; charset=utf-8");
+        ("Date", "Fri, 18 Jun 2021 12:57:43 GMT");
+        ("Expect-CT",
+         "max-age=604800, report-uri="https://report-uri.cloudflare.com"+[26 chars]);
+        ("NEL", "{"report_to":"cf-nel","max_age":604800}");
+        ("Report-To",
+         "{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\"+[200 chars]);
+        ...]
+    Cookies = map [] }
+#+end_example
 
