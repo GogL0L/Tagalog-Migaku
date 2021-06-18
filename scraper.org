@@ -228,322 +228,547 @@ let scrapeSite : char -> int ->  List<MigakuDictEntry> * List<MigakuConjEntry> =
 
 *** test av scrape site
 #+begin_src fsharp :results output :session :tangle no
-let result = scrapeSite 'a' 2
+let result = scrapeSite 'a' 5
 printfn "The result: %A" result
 #+end_src
 
 #+RESULTS:
 #+begin_example
-The result: ([{ term = "abandonada"
+The result: ([{ term = "abot ng mata"
     altterm = ""
     pronunciation = ""
-    definition = "adj. negligent"
+    definition = "comp., n. visibility"
     pos = ""
     examples = ""
-    audio = "" }; { term = "abandonado-do"
+    audio = "" }; { term = "abot ng tanaw"
                     altterm = ""
                     pronunciation = ""
-                    definition = "adj. abandoned; neglected"
+                    definition = "comp., n. visibility"
                     pos = ""
                     examples = ""
-                    audio = "" }; { term = "abang"
+                    audio = "" }; { term = "abot ng tingin"
                                     altterm = ""
                                     pronunciation = ""
-                                    definition = "n. watcher"
+                                    definition = "comp., n. visibility"
                                     pos = ""
                                     examples = ""
                                     audio = "" };
-  { term = "abang-aba"
+  { term = "abot-dinig"
     altterm = ""
     pronunciation = ""
-    definition = "adj. very miserable; wretched"
+    definition = "adj. within hearing"
+    pos = ""
+    examples = ""
+    audio = "" }; { term = "abot-isip"
+                    altterm = ""
+                    pronunciation = ""
+                    definition = "adv. within mental grasp"
+                    pos = ""
+                    examples = ""
+                    audio = "" }; { term = "abot-tanaw"
+                                    altterm = ""
+                                    pronunciation = ""
+                                    definition = "adj. within seeing distance"
+                                    pos = ""
+                                    examples = ""
+                                    audio = "" }; { term = "abot-tanaw"
+                                                    altterm = ""
+                                                    pronunciation = ""
+                                                    definition = "n. horizon"
+                                                    pos = ""
+                                                    examples = ""
+                                                    audio = "" };
+  { term = "abot-tingin"
+    altterm = ""
+    pronunciation = ""
+    definition = "n. visibility"
+    pos = ""
+    examples = ""
+    audio = "" }; { term = "aboy"
+                    altterm = ""
+                    pronunciation = ""
+                    definition = "adj. being driven to a certain place"
+                    pos = ""
+                    examples = ""
+                    audio = "" }; { term = "abrasador"
+                                    altterm = ""
+                                    pronunciation = ""
+                                    definition = "n. leg pillow"
+                                    pos = ""
+                                    examples = ""
+                                    audio = "" };
+  { term = "abrasadurin"
+    altterm = ""
+    pronunciation = ""
+    definition = "v., inf. use as leg pillow"
+    pos = ""
+    examples = ""
+    audio = "" }; { term = "abrasete"
+                    altterm = ""
+                    pronunciation = ""
+                    definition = "adj., adv. walking arm-in-arm"
+                    pos = ""
+                    examples = ""
+                    audio = "" }; { term = "abrasibo"
+                                    altterm = ""
+                                    pronunciation = ""
+                                    definition = "adj. abrasive"
+                                    pos = ""
+                                    examples = ""
+                                    audio = "" };
+  { term = "abrigo"
+    altterm = ""
+    pronunciation = ""
+    definition = "n. overcoat; sweater"
     pos = ""
     examples = ""
     audio = "" };
-  { term = "abangan"
+  { term = "abriguhan"
     altterm = ""
     pronunciation = ""
-    definition = "v., inf. wait for; stay hidden, ready to attack; ambush"
+    definition = "v., inf. put an overcoat or sweater on someone"
     pos = ""
     examples = ""
-    audio = "" };
-  { term = "abangan"
-    altterm = ""
-    pronunciation = ""
-    definition =
-     "n. place where you wait; place where ambushers wait for the victim"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abaniko"
+    audio = "" }; { term = "Abril"
                     altterm = ""
                     pronunciation = ""
-                    definition = "n. folding fan"
+                    definition = "n. April (month)"
                     pos = ""
                     examples = ""
-                    audio = "" }; { term = "abanikuhan"
+                    audio = "" }; { term = "abrilata"
                                     altterm = ""
                                     pronunciation = ""
-                                    definition = "v., inf. fan (e.g. oneself)"
+                                    definition = "n. can-opener"
                                     pos = ""
                                     examples = ""
                                     audio = "" };
-  { term = "abanikuhin"
+  { term = "abrisete"
     altterm = ""
     pronunciation = ""
-    definition = "v., inf. use as a fan"
+    definition = "adj., adv. walking arm-in-arm"
     pos = ""
     examples = ""
-    audio = "" }; { term = "abano"
+    audio = "" }; { term = "absen"
                     altterm = ""
                     pronunciation = ""
-                    definition = "n. cigar (tobacco)"
-                    pos = ""
-                    examples = ""
-                    audio = "" }; { term = "abante"
-                                    altterm = ""
-                                    pronunciation = ""
-                                    definition = "n. lead (in a game)"
-                                    pos = ""
-                                    examples = ""
-                                    audio = "" };
-  { term = "Abante!"
-    altterm = ""
-    pronunciation = ""
-    definition = "intrj. Go ahead! Proceed!"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abasto"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "n. baggage"
-                    pos = ""
-                    examples = ""
-                    audio = "" }; { term = "abat"
-                                    altterm = ""
-                                    pronunciation = ""
-                                    definition = "n. ambush; snare"
-                                    pos = ""
-                                    examples = ""
-                                    audio = "" };
-  { term = "abatan"
-    altterm = ""
-    pronunciation = ""
-    definition = "v., inf. waylay or ambush someone"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abatan"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "n. place where ambushers wait for the victim"
+                    definition = "n., adj. absence [n]; absent [adj.]"
                     pos = ""
                     examples = ""
                     audio = "" };
-  { term = "abay"
+  { term = "absent"
     altterm = ""
     pronunciation = ""
-    definition = "adj. lying or sitting close to each other"
+    definition = "n., adj. absence [n]; absent [adj.]"
     pos = ""
     examples = ""
-    audio = "" };
-  { term = "abay"
-    altterm = ""
-    pronunciation = ""
-    definition =
-     "n. 1. best man at a wedding; maid of honour; 2. escort; attendant"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abay (mga -)"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "n., pl. retinue; group of attendants"
-                    pos = ""
-                    examples = ""
-                    audio = "" }; { term = "abay na babae"
-                                    altterm = ""
-                                    pronunciation = ""
-                                    definition = "n. bridesmaid"
-                                    pos = ""
-                                    examples = ""
-                                    audio = "" }],
- [{ inflected = "inaabangan"
-    dict = ["abangan"] }; { inflected = "inabangan"
-                            dict = ["abangan"] }; { inflected = "aabangan"
-                                                    dict = ["abangan"] };
-  { inflected = "inaabanikuhan"
-    dict = ["abanikuhan"] }; { inflected = "inabanikuhan"
-                               dict = ["abanikuhan"] };
-  { inflected = "aabanikuhan"
-    dict = ["abanikuhan"] }; { inflected = "inaabaniko"
-                               dict = ["abanikuhin"] };
-  { inflected = "inabaniko"
-    dict = ["abanikuhin"] }; { inflected = "aabanikuhin"
-                               dict = ["abanikuhin"] };
-  { inflected = "inaabatan"
-    dict = ["abatan"] }; { inflected = "inabatan"
-                           dict = ["abatan"] }; { inflected = "aabatan"
-                                                  dict = ["abatan"] }])
+    audio = "" }],
+ [{ inflected = "inaabrasador"
+    dict = ["abrasadurin"] }; { inflected = "inabrasador"
+                                dict = ["abrasadurin"] };
+  { inflected = "aabrasadurin"
+    dict = ["abrasadurin"] }; { inflected = "inaabriguhan"
+                                dict = ["abriguhan"] };
+  { inflected = "inabriguhan"
+    dict = ["abriguhan"] }; { inflected = "aabriguhan"
+                              dict = ["abriguhan"] }])
 val result : List<MigakuDictEntry> * List<MigakuConjEntry> =
-  ([{ term = "abandonada"
+  ([{ term = "abot ng mata"
       altterm = ""
       pronunciation = ""
-      definition = "adj. negligent"
+      definition = "comp., n. visibility"
       pos = ""
       examples = ""
-      audio = "" }; { term = "abandonado-do"
+      audio = "" }; { term = "abot ng tanaw"
                       altterm = ""
                       pronunciation = ""
-                      definition = "adj. abandoned; neglected"
+                      definition = "comp., n. visibility"
                       pos = ""
                       examples = ""
-                      audio = "" }; { term = "abang"
+                      audio = "" }; { term = "abot ng tingin"
                                       altterm = ""
                                       pronunciation = ""
-                                      definition = "n. watcher"
+                                      definition = "comp., n. visibility"
                                       pos = ""
                                       examples = ""
                                       audio = "" };
-    { term = "abang-aba"
+    { term = "abot-dinig"
       altterm = ""
       pronunciation = ""
-      definition = "adj. very miserable; wretched"
+      definition = "adj. within hearing"
+      pos = ""
+      examples = ""
+      audio = "" }; { term = "abot-isip"
+                      altterm = ""
+                      pronunciation = ""
+                      definition = "adv. within mental grasp"
+                      pos = ""
+                      examples = ""
+                      audio = "" };
+    { term = "abot-tanaw"
+      altterm = ""
+      pronunciation = ""
+      definition = "adj. within seeing distance"
+      pos = ""
+      examples = ""
+      audio = "" }; { term = "abot-tanaw"
+                      altterm = ""
+                      pronunciation = ""
+                      definition = "n. horizon"
+                      pos = ""
+                      examples = ""
+                      audio = "" }; { term = "abot-tingin"
+                                      altterm = ""
+                                      pronunciation = ""
+                                      definition = "n. visibility"
+                                      pos = ""
+                                      examples = ""
+                                      audio = "" };
+    { term = "aboy"
+      altterm = ""
+      pronunciation = ""
+      definition = "adj. being driven to a certain place"
+      pos = ""
+      examples = ""
+      audio = "" }; { term = "abrasador"
+                      altterm = ""
+                      pronunciation = ""
+                      definition = "n. leg pillow"
+                      pos = ""
+                      examples = ""
+                      audio = "" };
+    { term = "abrasadurin"
+      altterm = ""
+      pronunciation = ""
+      definition = "v., inf. use as leg pillow"
+      pos = ""
+      examples = ""
+      audio = "" }; { term = "abrasete"
+                      altterm = ""
+                      pronunciation = ""
+                      definition = "adj., adv. walking arm-in-arm"
+                      pos = ""
+                      examples = ""
+                      audio = "" }; { term = "abrasibo"
+                                      altterm = ""
+                                      pronunciation = ""
+                                      definition = "adj. abrasive"
+                                      pos = ""
+                                      examples = ""
+                                      audio = "" };
+    { term = "abrigo"
+      altterm = ""
+      pronunciation = ""
+      definition = "n. overcoat; sweater"
       pos = ""
       examples = ""
       audio = "" };
-    { term = "abangan"
+    { term = "abriguhan"
       altterm = ""
       pronunciation = ""
-      definition = "v., inf. wait for; stay hidden, ready to attack; ambush"
+      definition = "v., inf. put an overcoat or sweater on someone"
       pos = ""
       examples = ""
-      audio = "" };
-    { term = "abangan"
-      altterm = ""
-      pronunciation = ""
-      definition =
-       "n. place where you wait; place where ambushers wait for the victim"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abaniko"
+      audio = "" }; { term = "Abril"
                       altterm = ""
                       pronunciation = ""
-                      definition = "n. folding fan"
+                      definition = "n. April (month)"
                       pos = ""
                       examples = ""
-                      audio = "" };
-    { term = "abanikuhan"
-      altterm = ""
-      pronunciation = ""
-      definition = "v., inf. fan (e.g. oneself)"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abanikuhin"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "v., inf. use as a fan"
-                      pos = ""
-                      examples = ""
-                      audio = "" }; { term = "abano"
+                      audio = "" }; { term = "abrilata"
                                       altterm = ""
                                       pronunciation = ""
-                                      definition = "n. cigar (tobacco)"
+                                      definition = "n. can-opener"
                                       pos = ""
                                       examples = ""
                                       audio = "" };
-    { term = "abante"
+    { term = "abrisete"
       altterm = ""
       pronunciation = ""
-      definition = "n. lead (in a game)"
+      definition = "adj., adv. walking arm-in-arm"
       pos = ""
       examples = ""
-      audio = "" }; { term = "Abante!"
+      audio = "" }; { term = "absen"
                       altterm = ""
                       pronunciation = ""
-                      definition = "intrj. Go ahead! Proceed!"
-                      pos = ""
-                      examples = ""
-                      audio = "" }; { term = "abasto"
-                                      altterm = ""
-                                      pronunciation = ""
-                                      definition = "n. baggage"
-                                      pos = ""
-                                      examples = ""
-                                      audio = "" };
-    { term = "abat"
-      altterm = ""
-      pronunciation = ""
-      definition = "n. ambush; snare"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abatan"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "v., inf. waylay or ambush someone"
+                      definition = "n., adj. absence [n]; absent [adj.]"
                       pos = ""
                       examples = ""
                       audio = "" };
-    { term = "abatan"
+    { term = "absent"
       altterm = ""
       pronunciation = ""
-      definition = "n. place where ambushers wait for the victim"
+      definition = "n., adj. absence [n]; absent [adj.]"
       pos = ""
       examples = ""
-      audio = "" }; { term = "abay"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "adj. lying or sitting close to each other"
-                      pos = ""
-                      examples = ""
-                      audio = "" };
-    { term = "abay"
-      altterm = ""
-      pronunciation = ""
-      definition =
-       "n. 1. best man at a wedding; maid of honour; 2. escort; attendant"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abay (mga -)"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "n., pl. retinue; group of attendants"
-                      pos = ""
-                      examples = ""
-                      audio = "" }; { term = "abay na babae"
-                                      altterm = ""
-                                      pronunciation = ""
-                                      definition = "n. bridesmaid"
-                                      pos = ""
-                                      examples = ""
-                                      audio = "" }],
-   [{ inflected = "inaabangan"
-      dict = ["abangan"] }; { inflected = "inabangan"
-                              dict = ["abangan"] }; { inflected = "aabangan"
-                                                      dict = ["abangan"] };
-    { inflected = "inaabanikuhan"
-      dict = ["abanikuhan"] }; { inflected = "inabanikuhan"
-                                 dict = ["abanikuhan"] };
-    { inflected = "aabanikuhan"
-      dict = ["abanikuhan"] }; { inflected = "inaabaniko"
-                                 dict = ["abanikuhin"] };
-    { inflected = "inabaniko"
-      dict = ["abanikuhin"] }; { inflected = "aabanikuhin"
-                                 dict = ["abanikuhin"] };
-    { inflected = "inaabatan"
-      dict = ["abatan"] }; { inflected = "inabatan"
-                             dict = ["abatan"] }; { inflected = "aabatan"
-                                                    dict = ["abatan"] }])
+      audio = "" }],
+   [{ inflected = "inaabrasador"
+      dict = ["abrasadurin"] }; { inflected = "inabrasador"
+                                  dict = ["abrasadurin"] };
+    { inflected = "aabrasadurin"
+      dict = ["abrasadurin"] }; { inflected = "inaabriguhan"
+                                  dict = ["abriguhan"] };
+    { inflected = "inabriguhan"
+      dict = ["abriguhan"] }; { inflected = "aabriguhan"
+                                dict = ["abriguhan"] }])
 #+end_example
 
-** Scrape whole websit
+
+** Scrape whole website
 #+begin_src fsharp :results output :session
-let scrape : unit -> string -> string =
+let scrape : unit -> unit =
     fun () ->
         for letterID in ['a' .. 'z'] do
             for numberID in [1 .. 9] do
                 printfn "%c%i" letterID numberID
+                let request = Http.Request(URL, silentHttpErrors = true)
+                let status = request.StatusCode
+
+                if status = 404 then index
+                else if index >= 1 then getMaxIndex char (index + 1)
+                else -1
+
+
 scrape ()
 #+end_src
 
 #+RESULTS:
+#+begin_example
+a1
+a2
+a3
+a4
+a5
+a6
+a7
+a8
+a9
+b1
+b2
+b3
+b4
+b5
+b6
+b7
+b8
+b9
+c1
+c2
+c3
+c4
+c5
+c6
+c7
+c8
+c9
+d1
+d2
+d3
+d4
+d5
+d6
+d7
+d8
+d9
+e1
+e2
+e3
+e4
+e5
+e6
+e7
+e8
+e9
+f1
+f2
+f3
+f4
+f5
+f6
+f7
+f8
+f9
+g1
+g2
+g3
+g4
+g5
+g6
+g7
+g8
+g9
+h1
+h2
+h3
+h4
+h5
+h6
+h7
+h8
+h9
+i1
+i2
+i3
+i4
+i5
+i6
+i7
+i8
+i9
+j1
+j2
+j3
+j4
+j5
+j6
+j7
+j8
+j9
+k1
+k2
+k3
+k4
+k5
+k6
+k7
+k8
+k9
+l1
+l2
+l3
+l4
+l5
+l6
+l7
+l8
+l9
+m1
+m2
+m3
+m4
+m5
+m6
+m7
+m8
+m9
+n1
+n2
+n3
+n4
+n5
+n6
+n7
+n8
+n9
+o1
+o2
+o3
+o4
+o5
+o6
+o7
+o8
+o9
+p1
+p2
+p3
+p4
+p5
+p6
+p7
+p8
+p9
+q1
+q2
+q3
+q4
+q5
+q6
+q7
+q8
+q9
+r1
+r2
+r3
+r4
+r5
+r6
+r7
+r8
+r9
+s1
+s2
+s3
+s4
+s5
+s6
+s7
+s8
+s9
+t1
+t2
+t3
+t4
+t5
+t6
+t7
+t8
+t9
+u1
+u2
+u3
+u4
+u5
+u6
+u7
+u8
+u9
+v1
+v2
+v3
+v4
+v5
+v6
+v7
+v8
+v9
+w1
+w2
+w3
+w4
+w5
+w6
+w7
+w8
+w9
+x1
+x2
+x3
+x4
+x5
+x6
+x7
+x8
+x9
+y1
+y2
+y3
+y4
+y5
+y6
+y7
+y8
+y9
+z1
+z2
+z3
+z4
+z5
+z6
+z7
+z8
+z9
+val scrape : unit -> unit
+#+end_example
 
 * Test
 
