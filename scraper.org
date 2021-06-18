@@ -23,27 +23,12 @@ printfn "Header works"
 : /tmp/nuget/25076--ddcd24c9-19c4-40f0-a2f5-4d45003cde70/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
 : /tmp/nuget/25076--ddcd24c9-19c4-40f0-a2f5-4d45003cde70/Project.fsproj : warning NU1701: Package 'FsVerbalExpressions 0.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.
 : [Loading /tmp/nuget/25076--ddcd24c9-19c4-40f0-a2f5-4d45003cde70/Project.fsproj.fsx]
-: namespace FSI_0038.Project
+: namespace FSI_0051.Project
 : 
 : Header works
 
 
-** Hemsidan och wordgroups
-
-#+begin_src fsharp :results output :session
-let doc = HtmlDocument.Load("https://tagalog.pinoydictionary.com/")
-let words = doc.CssSelect(".word-group")
-#+end_src
-
-#+RESULTS:
-: val doc : HtmlDocument =
-:   <!DOCTYPE html>
-: <html lang="en">
-:   <head>
-:     <meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /><meta name="robots" content="noarchive" /><meta name="googlebot" content="noarchive" /><meta name="google" content="notranslate" /><meta name="generator" content="WordPress 4.9.7" /><title>Tagalog Dictionary</title><meta property="og:image" content="https://www.pinoydictionary.c...
-
-
-** Data modelling
+** Entry type
 
 #+begin_src fsharp :results output :session
 type Entry = {Word: string
@@ -74,7 +59,6 @@ let wordGroupToWord (wordGroup : HtmlNode) : string =
 let wordGroupToInfo (wordGroup : HtmlNode) : string =
     wordGroup.CssSelect(".definition").[0]
     |> firstChildText "p"
-
 #+end_src
 
 #+RESULTS:
@@ -105,7 +89,6 @@ let infoToDefinitions (info:string) : string =
     |> matches suffix
     |> Array.head
     |> sprintf "%A"
-
 #+end_src
 
 #+RESULTS:
@@ -135,26 +118,9 @@ let wordGroupToEntry (wordgroup : HtmlNode) : Entry =
 #+RESULTS:
 
 
-** Test av wordGroupToEntry
+*** Test av wordGroupToEntry
 
-#+begin_src fsharp :results output :session
-let result = wordGroupToEntry words.[2]
-printfn "The result: %A" result
-#+end_src
-
-#+RESULTS:
-: The result: { Word = "dagit"
-:   Definition = "n. swooping and seizing while in flight"
-:   Conjugations = [] }
-: val result : Entry = { Word = "dagit"
-:                        Definition = "n. swooping and seizing while in flight"
-:                        Conjugations = [] }
-
-
-
-** Test av wordGroupToEntry procerdural
-
-#+begin_src fsharp :results output :session
+#+begin_src fsharp :results output :session :tangle no
 let result = wordGroupToEntry words.[2]
 printfn "The result: %A" result
 #+end_src
@@ -181,36 +147,19 @@ let getWebPageURL (char:char) (number:int) : string =
             "https://tagalog.pinoydictionary.com/list"
             char
             (string number)
-    
+#+end_src
 
+#+RESULTS:
+
+
+*** Test av getWebPageURL
+#+begin_src fsharp :results output :session :tangle no
 printfn "%s" <| getWebPageURL 'b' 2
 #+end_src
 
 #+RESULTS:
 : https://tagalog.pinoydictionary.com/list/b/2/
-: val getWebPageURL : char:char -> number:int -> string
 
-
-** Valid websites
-
-#+begin_src fsharp :results output :session
-let rec getMaxIndex (char:string) (index: int) : int =
-    let URL = getWebPageURL char index
-    let request = Http.Request(URL, silentHttpErrors = true)
-    let status = request.StatusCode
-    
-    if status = 404 then index
-    else if index >= 1 then getMaxIndex char (index + 1)
-    else -1
-
-let result = getMaxIndex 'a" 70
-printfn "result: %A" result
-#+end_src
-
-#+RESULTS:
-: result: 89
-: val getMaxIndex : char:string -> index:int -> int
-: val result : int = 89
 
 
 ** Migaku stuff
@@ -252,26 +201,36 @@ let createMigakuConjEntry
 #+RESULTS:
 
 
-** Scrape
 
-*** Scrape site
+** Scrape site
 #+begin_src fsharp :results output :session
-let scrapeSite char -> int ->  List<MigakuDictEntry> * List<MigakuConjEntry> =
+let scrapeSite : char -> int ->  List<MigakuDictEntry> * List<MigakuConjEntry> =
     fun charID intID ->
         let url = getWebPageURL charID intID
         let doc = HtmlDocument.Load(url)
         let words = doc.CssSelect(".word-group")
-        words
-        |> List.map wordGroupToEntry
-        |> List.map (fun entry -> (createMigakuDictEntry entry,
-                         createMigakuConjEntry))
-        |> List.unzip
-       
+        let dicList =
+            words
+            |> List.map wordGroupToEntry
+            |> List.map (fun entry ->
+                         createMigakuDictEntry entry.Word entry.Definition)
+        let conjList =
+            words
+            |> List.map wordGroupToEntry
+            |> List.map (fun entry ->
+                         createMigakuConjEntry entry.Word entry.Conjugations)
+        (dicList, conjList)
 #+end_src
 
 #+RESULTS:
 
-*** Scrape whole websit
+*** test av scrape site
+#+begin_src fsharp :results output :session :tangle no
+let result = scrapeSite 'a' 2
+printfn "The result: %A" result
+#+end_src
+
+** Scrape whole websit
 #+begin_src fsharp :results output :session
 let scrape : unit -> string -> string =
     fun () ->
@@ -552,4 +511,42 @@ val doc2 : HttpResponse =
         ...]
     Cookies = map [] }
 #+end_example
+
+
+** Hemsidan och wordgroups
+
+#+begin_src fsharp :results output :session
+let doc = HtmlDocument.Load("https://tagalog.pinoydictionary.com/")
+let words = doc.CssSelect(".word-group")
+#+end_src
+
+#+RESULTS:
+: val doc : HtmlDocument =
+:   <!DOCTYPE html>
+: <html lang="en">
+:   <head>
+:     <meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /><meta name="robots" content="noarchive" /><meta name="googlebot" content="noarchive" /><meta name="google" content="notranslate" /><meta name="generator" content="WordPress 4.9.7" /><title>Tagalog Dictionary</title><meta property="og:image" content="https://www.pinoydictionary.c...
+
+
+
+** Valid websites
+
+#+begin_src fsharp :results output :session
+let rec getMaxIndex (char:string) (index: int) : int =
+    let URL = getWebPageURL char index
+    let request = Http.Request(URL, silentHttpErrors = true)
+    let status = request.StatusCode
+    
+    if status = 404 then index
+    else if index >= 1 then getMaxIndex char (index + 1)
+    else -1
+
+let result = getMaxIndex 'a" 70
+printfn "result: %A" result
+#+end_src
+
+#+RESULTS:
+: result: 89
+: val getMaxIndex : char:string -> index:int -> int
+: val result : int = 89
 
