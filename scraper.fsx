@@ -126,7 +126,7 @@ let scrapeSite : string ->  List<MigakuDictEntry> * List<MigakuConjEntry> =
             |> List.map wordGroupToEntry
             |> List.map (fun entry ->
                          createMigakuDictEntry entry.Word entry.Definition)
-        let conjList =
+        let conjList = 
             words
             |> List.map wordGroupToEntry
             |> List.map (fun entry ->
@@ -141,27 +141,31 @@ let scrape : unit -> unit =
         let mutable dic = []
         let mutable conj = []
         //for letterID in ['a' .. 'z'] do
-        for charID in ['k' .. 'q'] do
+        for charID in ['a' .. 'z'] do
             let mutable intID = 1
             let mutable loop = true
             while loop do
-                let URL = getWebPageURL charID intID
-                printfn "Scraping: %s" URL
-                let request = Http.Request(URL, silentHttpErrors = true)
-                let status = request.StatusCode
+                try
+                    let URL = getWebPageURL charID intID
+                    printfn "Scraping: %s" URL
+                    let request = Http.Request(URL, silentHttpErrors = true)
+                    let status = request.StatusCode
 
-                if status = 404 then do
-                    loop <- false
-                else do
-                    let dicList, conjList = scrapeSite URL
-                    dic <- dic @ dicList
-                    conj <- conj @ conjList
-                    intID <- intID + 1
+                    if status = 404 then do
+                        loop <- false
+                    else do
+                        let dicList, conjList = scrapeSite URL
+                        dic <- dic @ dicList
+                        conj <- conj @ conjList
+                        intID <- intID + 1
+                with
+                    | :? System.ArgumentException as ex ->
+                        intID <- intID + 1
         printfn "Writing.."
         let dic_json = Json.serialize dic
         let conj_json = Json.serialize conj
-        File.WriteAllText ("dictionary_from_k_to_q.json", dic_json)
-        File.WriteAllText ("conjugations_from_k_to_q.json", conj_json)
+        File.WriteAllText ("dictionary.json", dic_json)
+        File.WriteAllText ("conjugations.json", conj_json)
         printfn "Finnished!"
 
 
