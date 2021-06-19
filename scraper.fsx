@@ -141,7 +141,7 @@ let scrape : unit -> unit =
         let mutable dic = []
         let mutable conj = []
         //for letterID in ['a' .. 'z'] do
-        for charID in ['a' .. 'z'] do
+        for charID in ['k' .. 'q'] do
             let mutable intID = 1
             let mutable loop = true
             while loop do
@@ -160,8 +160,8 @@ let scrape : unit -> unit =
         printfn "Writing.."
         let dic_json = Json.serialize dic
         let conj_json = Json.serialize conj
-        File.WriteAllText ("dictionary.json", dic_json)
-        File.WriteAllText ("conjugations.json", conj_json)
+        File.WriteAllText ("dictionary_from_k_to_q.json", dic_json)
+        File.WriteAllText ("conjugations_from_k_to_q.json", conj_json)
         printfn "Finnished!"
 
 

@@ -222,13 +222,17 @@ let createMigakuConjEntry
 let scrapeSite : string ->  List<MigakuDictEntry> * List<MigakuConjEntry> =
     fun url->
         let doc = HtmlDocument.Load(url)
-        let words = doc.CssSelect(".word-group")
+        let words =
+            if url.[43 .. 45] = "115" then
+                []
+            else
+                doc.CssSelect(".word-group")
         let dicList =
             words
             |> List.map wordGroupToEntry
             |> List.map (fun entry ->
                          createMigakuDictEntry entry.Word entry.Definition)
-        let conjList =
+        let conjList = 
             words
             |> List.map wordGroupToEntry
             |> List.map (fun entry ->
@@ -242,287 +246,17 @@ let scrapeSite : string ->  List<MigakuDictEntry> * List<MigakuConjEntry> =
 
 *** test av scrape site
 #+begin_src fsharp :results output :session :tangle no
-let url = getWebPageURL 'a' 4
+let url = getWebPageURL 'k' 115
+printfn "urlstuff: %s" url.[43 .. 45]
 let result = scrapeSite url
 printfn "The result: %A" result
 #+end_src
 
 #+RESULTS:
-#+begin_example
-The result: ([{ term = "abitsuwelas"
-    altterm = ""
-    pronunciation = ""
-    definition = "n., bot. small type of kidney bean"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abitswelas"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "n., bot. variety of kidney beans"
-                    pos = ""
-                    examples = ""
-                    audio = "" }; { term = "abla"
-                                    altterm = ""
-                                    pronunciation = ""
-                                    definition = "n. idle talk; too much talk"
-                                    pos = ""
-                                    examples = ""
-                                    audio = "" }; { term = "abnormal"
-                                                    altterm = ""
-                                                    pronunciation = ""
-                                                    definition = "adj. abnormal"
-                                                    pos = ""
-                                                    examples = ""
-                                                    audio = "" };
-  { term = "abo"
-    altterm = ""
-    pronunciation = ""
-    definition = "n. ash; ashes"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abog"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "n. 1. notice; 2. noise"
-                    pos = ""
-                    examples = ""
-                    audio = "" };
-  { term = "abogado"
-    altterm = ""
-    pronunciation = ""
-    definition =
-     "n. 1. lawyer; attorney; 2. solicitor; lawyer (for government); 3. councel"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abogasia"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "n. law; the legal profession"
-                    pos = ""
-                    examples = ""
-                    audio = "" }; { term = "abogasya"
-                                    altterm = ""
-                                    pronunciation = ""
-                                    definition = "n. law; the legal profession"
-                                    pos = ""
-                                    examples = ""
-                                    audio = "" }; { term = "abok"
-                                                    altterm = ""
-                                                    pronunciation = ""
-                                                    definition = "n. dust"
-                                                    pos = ""
-                                                    examples = ""
-                                                    audio = "" };
-  { term = "abokado"
-    altterm = ""
-    pronunciation = ""
-    definition = "n., bot. avocado"
-    pos = ""
-    examples = ""
-    audio = "" };
-  { term = "abonado"
-    altterm = ""
-    pronunciation = ""
-    definition =
-     "adj. ref. to a person who add money to someone else, because he is short of money"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abono"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "n. 1. fertilizer; 2. payment in advance"
-                    pos = ""
-                    examples = ""
-                    audio = "" };
-  { term = "abonohan"
-    altterm = ""
-    pronunciation = ""
-    definition = "v., inf. 1. fertilize; 2. disburse or pay in advance"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "aborsiyon"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "n. abortion"
-                    pos = ""
-                    examples = ""
-                    audio = "" }; { term = "abot"
-                                    altterm = ""
-                                    pronunciation = ""
-                                    definition = "adj. within reach"
-                                    pos = ""
-                                    examples = ""
-                                    audio = "" };
-  { term = "abot"
-    altterm = ""
-    pronunciation = ""
-    definition = "n. power; capacity; range"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abot"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "adj. overtaken; abreast with"
-                    pos = ""
-                    examples = ""
-                    audio = "" };
-  { term = "abot ng isang kabisa"
-    altterm = ""
-    pronunciation = ""
-    definition = "comp., n., mat. linear function"
-    pos = ""
-    examples = ""
-    audio = "" }; { term = "abot ng isip"
-                    altterm = ""
-                    pronunciation = ""
-                    definition = "comp., n. scope; distance the mind can reach"
-                    pos = ""
-                    examples = ""
-                    audio = "" }],
- [{ inflected = "inaabonohan"
-    dict = ["abonohan"] }; { inflected = "inabonohan"
-                             dict = ["abonohan"] }; { inflected = "aabonohan"
-                                                      dict = ["abonohan"] }])
-val url : string = "https://tagalog.pinoydictionary.com/list/a/4/"
-val result : List<MigakuDictEntry> * List<MigakuConjEntry> =
-  ([{ term = "abitsuwelas"
-      altterm = ""
-      pronunciation = ""
-      definition = "n., bot. small type of kidney bean"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abitswelas"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "n., bot. variety of kidney beans"
-                      pos = ""
-                      examples = ""
-                      audio = "" };
-    { term = "abla"
-      altterm = ""
-      pronunciation = ""
-      definition = "n. idle talk; too much talk"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abnormal"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "adj. abnormal"
-                      pos = ""
-                      examples = ""
-                      audio = "" }; { term = "abo"
-                                      altterm = ""
-                                      pronunciation = ""
-                                      definition = "n. ash; ashes"
-                                      pos = ""
-                                      examples = ""
-                                      audio = "" };
-    { term = "abog"
-      altterm = ""
-      pronunciation = ""
-      definition = "n. 1. notice; 2. noise"
-      pos = ""
-      examples = ""
-      audio = "" };
-    { term = "abogado"
-      altterm = ""
-      pronunciation = ""
-      definition =
-       "n. 1. lawyer; attorney; 2. solicitor; lawyer (for government)"+[12 chars]
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abogasia"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "n. law; the legal profession"
-                      pos = ""
-                      examples = ""
-                      audio = "" };
-    { term = "abogasya"
-      altterm = ""
-      pronunciation = ""
-      definition = "n. law; the legal profession"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abok"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "n. dust"
-                      pos = ""
-                      examples = ""
-                      audio = "" }; { term = "abokado"
-                                      altterm = ""
-                                      pronunciation = ""
-                                      definition = "n., bot. avocado"
-                                      pos = ""
-                                      examples = ""
-                                      audio = "" };
-    { term = "abonado"
-      altterm = ""
-      pronunciation = ""
-      definition =
-       "adj. ref. to a person who add money to someone else, because "+[20 chars]
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abono"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "n. 1. fertilizer; 2. payment in advance"
-                      pos = ""
-                      examples = ""
-                      audio = "" };
-    { term = "abonohan"
-      altterm = ""
-      pronunciation = ""
-      definition = "v., inf. 1. fertilize; 2. disburse or pay in advance"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "aborsiyon"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "n. abortion"
-                      pos = ""
-                      examples = ""
-                      audio = "" }; { term = "abot"
-                                      altterm = ""
-                                      pronunciation = ""
-                                      definition = "adj. within reach"
-                                      pos = ""
-                                      examples = ""
-                                      audio = "" };
-    { term = "abot"
-      altterm = ""
-      pronunciation = ""
-      definition = "n. power; capacity; range"
-      pos = ""
-      examples = ""
-      audio = "" }; { term = "abot"
-                      altterm = ""
-                      pronunciation = ""
-                      definition = "adj. overtaken; abreast with"
-                      pos = ""
-                      examples = ""
-                      audio = "" };
-    { term = "abot ng isang kabisa"
-      altterm = ""
-      pronunciation = ""
-      definition = "comp., n., mat. linear function"
-      pos = ""
-      examples = ""
-      audio = "" };
-    { term = "abot ng isip"
-      altterm = ""
-      pronunciation = ""
-      definition = "comp., n. scope; distance the mind can reach"
-      pos = ""
-      examples = ""
-      audio = "" }],
-   [{ inflected = "inaabonohan"
-      dict = ["abonohan"] }; { inflected = "inabonohan"
-                               dict = ["abonohan"] };
-    { inflected = "aabonohan"
-      dict = ["abonohan"] }])
-#+end_example
+: urlstuff: 115
+: The result: ([], [])
+: val url : string = "https://tagalog.pinoydictionary.com/list/k/115/"
+: val result : List<MigakuDictEntry> * List<MigakuConjEntry> = ([], [])
 
 
 ** Scrape whole website
@@ -551,8 +285,8 @@ let scrape : unit -> unit =
         printfn "Writing.."
         let dic_json = Json.serialize dic
         let conj_json = Json.serialize conj
-        File.WriteAllText ("dictionary.json", dic_json)
-        File.WriteAllText ("conjugations.json", conj_json)
+        File.WriteAllText ("dictionary_from_k_to_q.json", dic_json)
+        File.WriteAllText ("conjugations_from_k_to_q.json", conj_json)
         printfn "Finnished!"
 
 

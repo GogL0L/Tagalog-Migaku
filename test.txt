@@ -1,3 +1,0 @@
-this is the first line, but changed
-second line
-third line
